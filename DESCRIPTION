@@ -1,0 +1,13 @@
+Package: mrgsolvetk
+Type: Package
+Title: What the package does (short line)
+Version: 0.0.1
+Date: 2017-05-30
+Author: Kyle Baron
+Maintainer: Kyle Baron <kyleb@metrumrg.com>
+Description: More about what it does (maybe more than one line)
+License: What license is it under?
+Depends: 
+  mrgsolve,
+  MASS
+RoxygenNote: 6.0.1
