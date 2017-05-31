@@ -1,29 +1,21 @@
 
 ##' @export
-sens_uniform <- function(mod,pars,lower=0.2,upper=3,niter=100,
-                         spread=TRUE,...) {
+sens_unif_idata <- function(mod,pars,lower=0.2,upper=3,n=100,
+                            spread=TRUE,...) {
   pars <- mrgsolve:::cvec_cs(pars)
   params <- as.numeric(param(mod))[pars]
   parmin <- params*lower
   parmax <- params*upper
-  
-  out <- lapply(seq_along(params), function(i) {
-    x <- runif(niter,parmin[i],parmax[i])
-    data_frame(iter=1:niter,par=wparams[i],value=x)
-  }) %>% bind_rows
-  
-  if(spread) {
-    out <- spread(out,par,value)
-  } else {
-    out <- mutate(out,iter=1:n()) 
-  }
+  out <- mvuniform(n,pars,params*lower,params*upper)
+  out <- cbind(data_frame(.n=1:n),out)
+  if(!spread) out <- gather(out,par,value,2:ncol(out)) %>% mutate(.n=1:n())
   out
 }
 
 ##' @export
-sens_lognorm <- function(mod,pars,cv,niter=100,
-                         log = TRUE,
-                         spread=TRUE,...) {
+sens_norm_idata <- function(mod,pars,cv,n=100,
+                            log = TRUE,
+                            spread=TRUE,...) {
   pars <- mrgsolve:::cvec_cs(pars)
   params <- as.numeric(param(mod))[pars]
   cv <- as.matrix(cv/100)
@@ -33,20 +25,20 @@ sens_lognorm <- function(mod,pars,cv,niter=100,
     stop("Wrong length for cv") 
   }
   
-  out <- MASS::mvrnorm(niter,log(params),cv)
+  out <- MASS::mvrnorm(n,log(params),cv)
   out <- exp(out)
-  out <- cbind(matrix(1:nrow(out),ncol=1, dimnames=list(NULL,"iter")),out)
+  out <- cbind(matrix(1:nrow(out),ncol=1, dimnames=list(NULL,".n")),out)
   out <- as.data.frame(out)
-  if(!spread) out <- gather(out,par,value,2:ncol(out)) %>% mutate(iter=1:n())
+  if(!spread) out <- gather(out,par,value,2:ncol(out)) %>% mutate(.n=1:n())
   out
 }
 
 
 ##' @export
-sim_uniform <- function(mod,niter=100,...) {
-  data <- sens_uniform(mod=mod,niter=niter,...)
-  out <- mrgsim(mod,idata=data,carry.out="iter",obsonly=TRUE,...)
-  out <- left_join(as.tbl(out),data,by="iter")
+sens_unif <- function(mod,n=100,...) {
+  data <- sens_unif_idata(mod=mod,n=n,...)
+  out <- mrgsim(mod,idata=data,carry.out=".n",obsonly=TRUE,...)
+  out <- left_join(as.tbl(out),data,by=".n")
   out
 }
 
@@ -54,18 +46,22 @@ sim_uniform <- function(mod,niter=100,...) {
 ##' 
 ##' @param mod the model object
 ##' @export
-sim_lognorm <- function(mod,niter=100,...) {
-  data <- sens_lognorm(mod=mod,niter=niter,...)
-  out <- mrgsim(mod,idata=data,carry.out="iter",obsonly=TRUE,...)
-  out <- left_join(as.tbl(out),data,by="iter")
+sens_norm <- function(mod,n=100,...) {
+  data <- sens_norm_idata(mod=mod,n=n,...)
+  out <- mrgsim(mod,idata=data,carry.out=".n",obsonly=TRUE,...)
+  out <- left_join(as.tbl(out),data,by=".n")
   out
 }
 
 
 
 
-
-
-
+mvuniform <- function(n,par,a,b,...) {
+  out <- lapply(seq_along(par), function(i) {
+    setNames(data_frame(runif(n,a[i],b[i])),par[i])
+  })
+  out <- bind_cols(out)
+  out
+}
 
 
