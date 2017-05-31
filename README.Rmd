@@ -71,9 +71,7 @@ cov1
 
 ```{r}
 out <- 
-  mod %>% 
-  ev(amt=100,ii=24, addl=9) %>% update(end=240) %>% Req(CP) %>%
-  sens_covset(cov1) 
+  mod %>% sens_covset(cov1) 
 ```
 
 ```{r}
