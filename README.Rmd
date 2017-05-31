@@ -1,0 +1,63 @@
+---
+output:
+  md_document:
+    variant: markdown_github
+title: ""
+author: ""
+date: ""
+---
+```{r,echo=FALSE}
+knitr::opts_chunk$set(comment='.')
+```
+
+
+
+# mrgsolvetk
+A toolkit to be used with `mrgsolve`
+
+
+# Examples
+```{r}
+library(mrgsolve)
+library(mrgsolvetk)
+
+mod <- mread_cache("pk1cmt",modlib())
+mod <- ev(mod, amt=100) %>% Req(CP)
+```
+
+
+
+## Sensitivity analyses
+
+### `sens_unif`
+
+- Draw parameters from uniform distribution based on current parameter values
+
+```{r}
+mod %>% sens_unif(n=10, pars="CL,VC,KA1", lower=0.2, upper=3)
+  
+```
+
+### `sens_norm`
+
+- Draw parameters from (log) normal distribution based on current parameter values and `%CV`
+
+```{r}
+mod %>% sens_norm(n=10, pars="CL,VC", cv=30)
+```
+
+### `sens_seq`
+
+- Give a sequence for one or more parameters
+
+```{r}
+mod %>% sens_seq(CL = seq(2,12,2), VC = seq(30,100,10))
+```
+
+
+
+
+
+
+
+
