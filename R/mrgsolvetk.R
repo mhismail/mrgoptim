@@ -34,6 +34,55 @@ sens_norm <- function(mod,n=100,pars=names(param(mod)),...) {
   out
 }
 
+
+##' @export
+##' @rdname sens
+sens_seq <- function(mod,n=100,...) {
+  args <- list(...)
+  pars <- intersect(names(args),names(param(mod)))
+  args <- args[pars]
+  out <- lapply(seq_along(args), function(i) {
+    value <- unlist(args[i])
+    idata <- dplyr::data_frame(ID=seq_along(value),y=ID,x=value)
+    names(idata) <- c("ID", ".n", pars[i])
+    out <- dplyr::as_data_frame(mrgsim(mod,idata=idata,carry.out='.n',...))
+    out <- mutate(out,param = pars[i])
+    names(idata)[3] <- "value" 
+    left_join(out,idata,by=c("ID", ".n"))
+  })
+  out <- bind_rows(out)
+  out
+}
+
+##' @export
+##' @rdname sens
+sens_covset <- function(mod,covset,n=100,...) {
+  stopifnot(requireNamespace("dmutate"))
+  idata <- dplyr::data_frame(ID = seq_len(n), .n=ID)
+  idata <- dmutate::mutate_random(idata,covset)
+  covs <- as.list(covset)
+  vars <- unlist(lapply(covs,function(x) x$vars))
+  out <- mrgsim(mod,idata=idata,obsonly=TRUE,carry.out=vars,...)
+  dplyr::as_data_frame(out)
+}
+
+##' @export
+##' @rdname sens
+sens_unif_ <- function(x,.dots) {
+  do.call(sens_unif,c(list(mod),.dots))
+}
+##' @export
+##' @rdname sens
+sens_norm_ <- function(mod,.dots) {
+  do.call(sens_norm,c(list(mod),.dots))
+}
+##' @export
+##' @rdname sens
+sens_seq_ <- function(mod,.dots) {
+  do.call(sens_seq,c(list(mod),.dots))
+}
+
+
 ##' @export
 ##' @rdname sens
 sens_unif_idata <- function(pars,lower=0.2,upper=3,n=100,
@@ -61,42 +110,7 @@ sens_norm_idata <- function(pars,cv,
 
 
 
-##' @export
-##' @rdname sens
-sens_seq <- function(mod,n=100,...) {
-  args <- list(...)
-  pars <- intersect(names(args),names(param(mod)))
-  args <- args[pars]
-  out <- lapply(seq_along(args), function(i) {
-    value <- unlist(args[i])
-    idata <- dplyr::data_frame(ID=seq_along(value),y=ID,x=value)
-    names(idata) <- c("ID", ".n", pars[i])
-    out <- dplyr::as_data_frame(mrgsim(mod,idata=idata,carry.out='.n',...))
-    out <- mutate(out,param = pars[i])
-    names(idata)[3] <- "value" 
-    left_join(out,idata,by=c("ID", ".n"))
-  })
-  out <- bind_rows(out)
-  out
-}
 
-
-
-##' @export
-##' @rdname sens
-sens_unif_ <- function(x,.dots) {
-  do.call(sens_unif,c(list(mod),.dots))
-}
-##' @export
-##' @rdname sens
-sens_norm_ <- function(mod,.dots) {
-  do.call(sens_norm,c(list(mod),.dots))
-}
-##' @export
-##' @rdname sens
-sens_seq_ <- function(mod,.dots) {
-  do.call(sens_seq,c(list(mod),.dots))
-}
 
 
 mvuniform <- function(n,par,a,b,...) {

@@ -13,4 +13,6 @@ Depends:
 Imports:
   dplyr,
   tibble
+Suggests:
+  dmutate
 RoxygenNote: 6.0.1

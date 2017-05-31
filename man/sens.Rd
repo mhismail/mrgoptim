@@ -3,30 +3,33 @@
 \name{sens_unif}
 \alias{sens_unif}
 \alias{sens_norm}
-\alias{sens_unif_idata}
-\alias{sens_norm_idata}
 \alias{sens_seq}
+\alias{sens_covset}
 \alias{sens_unif_}
 \alias{sens_norm_}
 \alias{sens_seq_}
+\alias{sens_unif_idata}
+\alias{sens_norm_idata}
 \title{Perform sensititity analysis on model parameters.}
 \usage{
 sens_unif(mod, n = 100, pars = names(param(mod)), ...)
 
 sens_norm(mod, n = 100, pars = names(param(mod)), ...)
 
-sens_unif_idata(pars, lower = 0.2, upper = 3, n = 100, spread = TRUE,
-  ...)
-
-sens_norm_idata(pars, cv, n = 100, log = TRUE, spread = TRUE, ...)
-
 sens_seq(mod, n = 100, ...)
+
+sens_covset(mod, n = 100, covset, ...)
 
 sens_unif_(x, .dots)
 
 sens_norm_(mod, .dots)
 
 sens_seq_(mod, .dots)
+
+sens_unif_idata(pars, lower = 0.2, upper = 3, n = 100, spread = TRUE,
+  ...)
+
+sens_norm_idata(pars, cv, n = 100, log = TRUE, spread = TRUE, ...)
 }
 \arguments{
 \item{mod}{the model object}
