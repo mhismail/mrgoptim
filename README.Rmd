@@ -59,6 +59,14 @@ mod %>% sens_seq(CL = seq(2,12,2), VC = seq(30,100,10))
 ```
 
 
+### `sens_grid`
+
+- Like `sens_seq` but performs all combinations
+
+```{r}
+mod %>%  sens_grid(CL = seq(1,10,1), VC = seq(20,40,5))
+```
+
 ### `sens_covset`
 
 - Use `dmutate` to generate random variates for each parameter 
@@ -70,8 +78,7 @@ cov1
 ```
 
 ```{r}
-out <- 
-  mod %>% sens_covset(cov1) 
+out <- mod %>% sens_covset(cov1) 
 ```
 
 ```{r}

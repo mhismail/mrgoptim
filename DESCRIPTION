@@ -1,12 +1,18 @@
 Package: mrgsolvetk
 Type: Package
-Title: What the package does (short line)
+Title: Simulation Tool Kit for mrgsolve
 Version: 0.0.1
 Date: 2017-05-30
-Author: Kyle Baron
+Authors@R: c(
+    person("Kyle T", "Baron", "", "kyleb@metrumrg.com", c("aut", "cre")),
+    person("Metrum Research Group LLC", role =  c("cph"))
+    )
 Maintainer: Kyle Baron <kyleb@metrumrg.com>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+URL: https://github.com/mrgsolve/mrgsolvetk
+BugReports: https://github.com/mrgsolve/mrgsolvetk/issues
+Copyright: Metrum Research Group, LLC 2017
+Description: Perform sensitivity analyses and estimate parameters for your 'mrgsolve' model.
+License: GPL (>=2)
 Depends: 
   mrgsolve,
   MASS

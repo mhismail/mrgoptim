@@ -56,8 +56,23 @@ sens_seq <- function(mod,n=100,...) {
 
 ##' @export
 ##' @rdname sens
+sens_grid <- function(mod,n=100,...) {
+  args <- list(...)
+  pars <- intersect(names(args),names(param(mod)))
+  args <- args[pars]
+  idata <- do.call(expand.grid,args)
+  idata <- mutate(idata,ID = seq_len(n()), .n=ID)
+  out <- dplyr::as_data_frame(mrgsim(mod,idata=idata,carry.out=c('.n',pars),...))
+  out
+}
+
+
+
+##' @export
+##' @rdname sens
 sens_covset <- function(mod,covset,n=100,...) {
   stopifnot(requireNamespace("dmutate"))
+  stopifnot(inherits(covset,"covset"))
   idata <- dplyr::data_frame(ID = seq_len(n), .n=ID)
   idata <- dmutate::mutate_random(idata,covset)
   covs <- as.list(covset)
@@ -107,11 +122,6 @@ sens_norm_idata <- function(pars,cv,
   if(!spread) out <- gather(out,par,value,2:ncol(out)) %>% mutate(.n=1:n())
   out
 }
-
-
-
-
-
 
 mvuniform <- function(n,par,a,b,...) {
   parn <- names(par)

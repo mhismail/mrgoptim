@@ -4,6 +4,7 @@
 \alias{sens_unif}
 \alias{sens_norm}
 \alias{sens_seq}
+\alias{sens_grid}
 \alias{sens_covset}
 \alias{sens_unif_}
 \alias{sens_norm_}
@@ -18,7 +19,9 @@ sens_norm(mod, n = 100, pars = names(param(mod)), ...)
 
 sens_seq(mod, n = 100, ...)
 
-sens_covset(mod, n = 100, covset, ...)
+sens_grid(mod, n = 100, ...)
+
+sens_covset(mod, covset, n = 100, ...)
 
 sens_unif_(x, .dots)
 
