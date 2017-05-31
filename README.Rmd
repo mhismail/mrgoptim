@@ -23,6 +23,8 @@ library(mrgsolvetk)
 
 mod <- mread_cache("pk1cmt",modlib())
 mod <- ev(mod, amt=100) %>% Req(CP)
+
+param(mod)
 ```
 
 
@@ -32,6 +34,7 @@ mod <- ev(mod, amt=100) %>% Req(CP)
 ### `sens_unif`
 
 - Draw parameters from uniform distribution based on current parameter values
+- `lower` and `upper` scale the parameter value to provide `a` and `b` arguments to `runif`
 
 ```{r}
 mod %>% sens_unif(n=10, pars="CL,VC,KA1", lower=0.2, upper=3)
