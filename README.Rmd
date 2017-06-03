@@ -89,6 +89,48 @@ distinct(out,ID,CL,VC)
 
 
 
+# Estimation `stats::optim`
 
+## Load a data set
+```{r}
+data(exTheoph)
+df <- as.data.frame(exTheoph)
+id1 <- filter(df, ID==3) %>% mutate(DV = conc)
+```
+
+
+## Load a model
+```{r}
+mod <- mread("pk1cmt", modlib())
+```
+
+## Define an objective function
+```{r}
+ofv <- function(dv,pred,par) {
+  a <- sum((dv-pred)^2) 
+  return(a)
+}
+```
+
+
+
+## Fit
+```{r}
+fit <- 
+  mod %>% 
+  Req(CP) %>% 
+  data_set(id1) %>%
+  fit_optim(pred="CP",.ofv=ofv,par=log(c(CL=0.1, VC=1,KA1=2)))
+```
+
+
+## Plot
+
+```{r,fig.path="inst/maintenance/img/README-"}
+library(ggplot2)
+ggplot(data=fit$tab) + 
+  geom_point(aes(time,conc)) +
+  geom_line(aes(time,PRED)) 
+```
 
 
