@@ -18,7 +18,8 @@ Depends:
   MASS
 Imports:
   dplyr,
-  tibble
+  tibble,
+  optimhelp
 Suggests:
   dmutate
 RoxygenNote: 6.0.1

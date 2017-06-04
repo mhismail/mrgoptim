@@ -113,14 +113,26 @@ ofv <- function(dv,pred,par) {
 ```
 
 
+## Define parameters to estimate
+```{r}
+library(optimhelp)
+par <- parset(log_par("CL", 0.1),
+              log_par("VC", 1.1),
+              log_par("KA1",1.1))
+```
+
+
 
 ## Fit
 ```{r}
 fit <- 
   mod %>% 
-  Req(CP) %>% 
   data_set(id1) %>%
-  fit_optim(pred="CP",.ofv=ofv,par=log(c(CL=0.1, VC=1,KA1=2)))
+  fit_optim(pred="CP",.ofv=ofv,par=par)
+```
+
+```{r}
+exp(fit$par)
 ```
 
 
