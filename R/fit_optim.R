@@ -40,7 +40,7 @@ fit_optim <- function(mod,data=NULL,dv="DV",pred="DV",.ofv,par,...) {
                ...)
   out <- predict_optim(fit$par,mod=mod,data=data,p=par,get_pred=TRUE)
   data[,"PRED"] <- out[,pred]
-  return(c(fit,list(tab=data)))
+  return(c(fit,list(pars=graft(par,fit$par),tab=data)))
 }
 
 
