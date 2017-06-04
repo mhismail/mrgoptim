@@ -94,8 +94,7 @@ distinct(out,ID,CL,VC)
 ## Load a data set
 ```{r}
 data(exTheoph)
-df <- as.data.frame(exTheoph)
-id1 <- filter(df, ID==3) %>% mutate(DV = conc)
+df <- mutate(exTheoph, DV = conc)
 ```
 
 
@@ -122,11 +121,12 @@ par <- parset(log_par("CL", 0.1),
 
 
 
-## Fit
+## Fit 
+- `ID==3`
 ```{r}
 fit <- 
   mod %>% 
-  data_set(id1) %>%
+  data_set(df, ID==3) %>%
   fit_optim(pred="CP",.ofv=ofv,par=par)
 ```
 
@@ -159,7 +159,7 @@ par <- parset(log_par("CL", 0.1),
 ```{r}
 fitt <- 
   mod %>% 
-  data_set(id1) %>%
+  data_set(df, ID==3) %>%
   fit_optim(pred="CP",.ofv=ofv,par=par)
 ```
 
