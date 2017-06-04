@@ -105,7 +105,7 @@ mod <- mread("pk1cmt", modlib())
 
 ## Define an objective function
 ```{r}
-ofv <- function(dv,pred,par) sum((dv-pred)^2)
+ofv <- function(dv,pred,par) sum((pred-dv)^2)
 ```
 
 

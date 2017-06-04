@@ -15,7 +15,7 @@ predict_optim <- function(pars,mod,data,dv = "DV", pred = "PRED",.ofv,p,
     stop("failure in predict function",call.=FALSE) 
   }
   if(get_pred) return(as.data.frame(dplyr::as_data_frame(out)))
- .ofv(data[dvindex,dv],out[dvindex,pred],p)
+ .ofv(data[dvindex,dv],unlist(out[dvindex,pred],use.names=FALSE),p)
 }
 
 ##' Fit a model to data using optim.
