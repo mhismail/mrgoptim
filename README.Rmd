@@ -107,8 +107,7 @@ mod <- mread("pk1cmt", modlib())
 ## Define an objective function
 ```{r}
 ofv <- function(dv,pred,par) {
-  a <- sum((dv-pred)^2) 
-  return(a)
+  sum((dv-pred)^2)
 }
 ```
 
