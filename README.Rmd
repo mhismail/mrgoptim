@@ -151,7 +151,7 @@ ggplot(data=fit$tab) +
 library(optimhelp)
 par <- parset(log_par("CL", 0.1),
               log_par("VC", 1.1),
-              log_par("KA1",1.8,fixed=TRUE))
+              log_par("KA1",1.9,fixed=TRUE))
 ```
 
 
