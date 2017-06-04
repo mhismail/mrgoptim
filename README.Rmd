@@ -146,3 +146,27 @@ ggplot(data=fit$tab) +
 ```
 
 
+## With fixed parameter
+```{r}
+library(optimhelp)
+par <- parset(log_par("CL", 0.1),
+              log_par("VC", 1.1),
+              log_par("KA1",1.8,fixed=TRUE))
+```
+
+
+
+## Fit
+```{r}
+fitt <- 
+  mod %>% 
+  data_set(id1) %>%
+  fit_optim(pred="CP",.ofv=ofv,par=par)
+```
+
+```{r}
+fitt$pars
+fit$value
+fitt$value
+
+```
