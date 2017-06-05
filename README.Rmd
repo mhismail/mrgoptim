@@ -126,7 +126,7 @@ par <- parset(log_par("CL", 0.1),
 fit <- 
   mod %>% 
   data_set(df, ID==3) %>%
-  fit_optim(pred="CP",.ofv=ofv,par=par)
+  fit_optim(pred="CP",ofv=ofv,par=par)
 ```
 
 ```{r}
@@ -160,7 +160,7 @@ par <- parset(log_par("CL", 0.1),
 fitt <- 
   mod %>% 
   data_set(df, ID==3) %>%
-  fit_optim(pred="CP",.ofv=ofv,par=par)
+  fit_optim(pred="CP",ofv=ofv,par=par)
 ```
 
 ```{r}

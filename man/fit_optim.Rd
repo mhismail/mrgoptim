@@ -4,7 +4,7 @@
 \alias{fit_optim}
 \title{Fit a model to data using optim.}
 \usage{
-fit_optim(mod, data = NULL, dv = "DV", pred = "DV", .ofv, par, ...)
+fit_optim(mod, data = NULL, dv = "DV", pred = "DV", ofv, par, ...)
 }
 \description{
 Fit a model to data using optim.
