@@ -25,17 +25,32 @@ predict_optim <- function(pars,mod,data,dv = "DV", pred = "PRED",ofv,p,
   ofv(data[dvindex,dv],unlist(out[dvindex,pred],use.names=FALSE),p)
 }
 
+
+
 ##' Fit a model to data using optim.
 ##' 
 ##' @export
 ##' @rdname fit_optim
-fit_optim <- function(mod,data=NULL,dv="DV",pred="DV",ofv,par,...) {
+fit_optim <- function(mod,data=NULL,dv="DV",pred="DV",evid="evid",ofv,par,...) {
+  check_ofv_formals(ofv)
+  if(!is.parset(par)) {
+    stop("par argument must be a parset object",call.=FALSE) 
+  }
+  if(!is.mrgmod(mod)) {
+    stop("mod argument must be a model object",call.=FALSE) 
+  }
   if(is.null(data)) {
     data <- as.data.frame(unclass(mod@args$data))
     data[,"..zeros.."] <- NULL
     mod@args$data <- NULL 
   }
-  check_ofv_formals(ofv)
+  if(!exists(dv,data)) {
+    stop("couldn't find ",dv, " in data set",call.=FALSE) 
+  }
+  if(!exists(evid,data)) {
+    stop("please identify evid column in data set", call.=FALSE) 
+  }
+  
   fit <- optim(par=initials(par),
                fn=predict_optim,
                mod=mod,
@@ -44,7 +59,7 @@ fit_optim <- function(mod,data=NULL,dv="DV",pred="DV",ofv,par,...) {
                pred=pred,
                ofv=ofv,
                p=par,
-               dvindex = which(data$evid==0),
+               dvindex = which(data[,evid]==0),
                ...)
   out <- predict_optim(fit$par,mod=mod,data=data,p=par,get_pred=TRUE)
   data[,"PRED"] <- out[,pred]
@@ -52,4 +67,42 @@ fit_optim <- function(mod,data=NULL,dv="DV",pred="DV",ofv,par,...) {
 }
 
 
-
+##' Fit a model to data using minqa::newuoa
+##' 
+##' @export
+##' @rdname fit_optim
+fit_minqa <- function(mod,data=NULL,dv="DV",pred="DV",evid="evid",ofv,par,...) {
+  stopifnot(requireNamespace("minqa"))
+  check_ofv_formals(ofv)
+  if(!is.parset(par)) {
+    stop("par argument must be a parset object",call.=FALSE) 
+  }
+  if(!is.mrgmod(mod)) {
+    stop("mod argument must be a model object",call.=FALSE) 
+  }
+  if(is.null(data)) {
+    data <- as.data.frame(unclass(mod@args$data))
+    data[,"..zeros.."] <- NULL
+    mod@args$data <- NULL 
+  }
+  if(!exists(dv,data)) {
+    stop("couldn't find ",dv, " in data set",call.=FALSE) 
+  }
+  if(!exists(evid,data)) {
+    stop("please identify evid column in data set", call.=FALSE) 
+  }
+  
+  fit <- minqa::newuoa(par=initials(par),
+                       fn=predict_optim,
+                       mod=mod,
+                       data=data,
+                       dv=dv,
+                       pred=pred,
+                       ofv=ofv,
+                       p=par,
+                       dvindex = which(data[,evid]==0),
+                       ...)
+  out <- predict_optim(fit$par,mod=mod,data=data,p=par,get_pred=TRUE)
+  data[,"PRED"] <- out[,pred]
+  return(c(fit,list(pars=graft(par,fit$par),tab=data)))
+}

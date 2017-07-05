@@ -2,10 +2,17 @@
 % Please edit documentation in R/fit_optim.R
 \name{fit_optim}
 \alias{fit_optim}
+\alias{fit_minqa}
 \title{Fit a model to data using optim.}
 \usage{
-fit_optim(mod, data = NULL, dv = "DV", pred = "DV", ofv, par, ...)
+fit_optim(mod, data = NULL, dv = "DV", pred = "DV", evid = "evid", ofv,
+  par, ...)
+
+fit_minqa(mod, data = NULL, dv = "DV", pred = "DV", evid = "evid", ofv,
+  par, ...)
 }
 \description{
 Fit a model to data using optim.
+
+Fit a model to data using minqa::newuoa
 }

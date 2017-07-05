@@ -114,8 +114,12 @@ sens_norm_idata <- function(pars,cv,
                             n=100,
                             log = TRUE,
                             spread=TRUE,...) {
-  cv <- diag(rep((cv/100)^2,length(pars)))
+  np <- length(pars)
+  cv <- diag(rep((cv/100)^2,np),nrow=np,ncol=np)
   out <- MASS::mvrnorm(n,log(pars),cv)
+  if(length(pars)==1) {
+    out <- matrix(out,ncol=1,dimnames=list(NULL,names(pars))) 
+  }
   out <- exp(out)
   out <- cbind(matrix(1:nrow(out),ncol=1, dimnames=list(NULL,".n")),out)
   out <- as.data.frame(out)

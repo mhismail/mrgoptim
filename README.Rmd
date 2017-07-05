@@ -104,6 +104,7 @@ mod <- mread("pk1cmt", modlib())
 ```
 
 ## Define an objective function
+- This could be anything
 ```{r}
 ofv <- function(dv,pred,par) -1*sum(dnorm(dv,pred,par$sigma,log=TRUE))
 ```
@@ -121,7 +122,12 @@ par <- parset(log_par("CL", 0.1),
 
 
 ## Fit 
-- `ID==3`
+- The workflow is the same as when we simulate
+    - Get the model ready
+    - Define the dta set
+    - Pipe to `fit_optim` rather than `mrgsim`
+- Here, just fit `ID==3`
+
 ```{r}
 fit <- 
   mod %>% 
