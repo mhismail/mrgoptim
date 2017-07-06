@@ -16,3 +16,11 @@ NULL
 globalVariables(c("time","ID","mod","par","value"))
 
 
+
+##' mrgsolve simulation tool kit.
+##' 
+##' 
+##' @rdname mrgsolvetk
+##' @name mrgsolvetk
+##' 
+NULL
