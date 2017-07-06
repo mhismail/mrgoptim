@@ -32,5 +32,7 @@ mod <- mrgsolve:::house()
 
 out <- sens_unif(mod, n=10, pars="CL,VC")
 
-
+}
+\seealso{
+\code{\link{sens_unif_idata}}
 }

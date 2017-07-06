@@ -15,6 +15,7 @@
 ##' 
 ##' out <- sens_unif(mod, n=10, pars="CL,VC")
 ##' 
+##' @seealso \code{\link{sens_unif_idata}}
 ##' 
 ##' @export
 sens_unif <- function(mod,n=100,pars=names(param(mod)),...) {
@@ -47,6 +48,8 @@ sens_unif_ <- function(mod,.dots) {
 ##' 
 ##' @details
 ##' See the \code{spread} argument to \code{\link{sens_norm_idata}}. 
+##' 
+##' @seealso \code{\link{sens_norm_idata}}
 ##' 
 ##' @export
 sens_norm <- function(mod,n=100,pars=names(param(mod)),...) {
