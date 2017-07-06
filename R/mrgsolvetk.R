@@ -15,7 +15,7 @@
 ##' 
 ##' out <- sens_unif(mod, n=10, pars="CL,VC")
 ##' 
-##' @seealso \code{\link{sens_unif_idata}}
+##' @seealso \code{\link{sens_unif_idata}} \code{\link{covset}}
 ##' 
 ##' @export
 sens_unif <- function(mod,n=100,pars=names(param(mod)),...) {
@@ -49,7 +49,7 @@ sens_unif_ <- function(mod,.dots) {
 ##' @details
 ##' See the \code{spread} argument to \code{\link{sens_norm_idata}}. 
 ##' 
-##' @seealso \code{\link{sens_norm_idata}}
+##' @seealso \code{\link{sens_norm_idata}} \code{\link{sens_covset}}
 ##' 
 ##' @export
 sens_norm <- function(mod,n=100,pars=names(param(mod)),...) {
@@ -96,6 +96,7 @@ sens_norm_ <- function(mod,.dots) {
 ##' out
 ##' 
 ##' @seealso \code{\link{sens_grid}}
+##' 
 ##' @export
 sens_seq <- function(mod,n=100,...) {
   args <- list(...)
@@ -147,6 +148,7 @@ sens_seq_ <- function(mod,.dots) {
 ##' 
 ##' 
 ##' @seealso \code{\link{sens_seq}}
+##' 
 ##' @export
 sens_grid <- function(mod,n=100,...) {
   args <- list(...)
@@ -168,6 +170,7 @@ sens_grid <- function(mod,n=100,...) {
 ##' @param n the number of replicates to simulate
 ##' @param ... passed to mutate_random and mrgsim
 ##' 
+##' @seealso \code{\link{sens_unif}} \code{\link{sens_norm}} 
 ##' 
 ##' @export
 sens_covset <- function(mod,covset,n=100,...) {
@@ -209,6 +212,8 @@ sens_covset <- function(mod,covset,n=100,...) {
 ##' 
 ##' sens_unif_idata(pars, lower=0.67,upper=0.99, n=5, spread=FALSE)
 ##' 
+##' @seealso \code{\link{sens_unif}}
+##' 
 ##' @export
 sens_unif_idata <- function(pars,lower=0.2,upper=3,n=100,spread=TRUE,...) {
   out <- mvuniform(n,pars,pars*lower,pars*upper)
@@ -227,6 +232,8 @@ sens_unif_idata <- function(pars,lower=0.2,upper=3,n=100,spread=TRUE,...) {
 ##' @param n number of replicates to simulate
 ##' @param spread if \code{TRUE} the data frame is returned in wide format
 ##' @param ... not used
+##' 
+##' @seealso \code{\link{sens_norm}}
 ##' 
 ##' @export
 sens_norm_idata <- function(pars,cv,n=100,

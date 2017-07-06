@@ -18,3 +18,6 @@ sens_covset(mod, covset, n = 100, ...)
 \description{
 Sensitivity analysis using covset objects.
 }
+\seealso{
+\code{\link{sens_unif}} \code{\link{sens_norm}}
+}

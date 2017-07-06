@@ -28,5 +28,5 @@ Sensitivity analysis with log-normal distributions.
 See the \code{spread} argument to \code{\link{sens_norm_idata}}.
 }
 \seealso{
-\code{\link{sens_norm_idata}}
+\code{\link{sens_norm_idata}} \code{\link{sens_covset}}
 }

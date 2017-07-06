@@ -20,3 +20,6 @@ sens_norm_idata(pars, cv, n = 100, spread = TRUE, ...)
 \description{
 Generate idata set for sens_norm.
 }
+\seealso{
+\code{\link{sens_norm}}
+}

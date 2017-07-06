@@ -41,3 +41,6 @@ sens_unif_idata(pars, lower=0.67,upper=0.99, n=5)
 sens_unif_idata(pars, lower=0.67,upper=0.99, n=5, spread=FALSE)
 
 }
+\seealso{
+\code{\link{sens_unif}}
+}
