@@ -190,3 +190,4 @@ strip_args <- function(x) {
   x@args$idata <- NULL
   x
 }
+
