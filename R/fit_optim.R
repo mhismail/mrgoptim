@@ -1,6 +1,4 @@
-##' @importFrom optimhelp graft require_par
-##' @importClassesFrom optimhelp parset 
-##' @importMethodsFrom optimhelp initials as.list
+
 
 is_error <- function(x) {
   inherits(x,"try-error") 

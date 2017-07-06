@@ -19,7 +19,9 @@ Depends:
 Imports:
   dplyr,
   tibble,
-  optimhelp
+  optimhelp,
+  tidyr
 Suggests:
-  dmutate
+  dmutate,
+  minqa
 RoxygenNote: 6.0.1
