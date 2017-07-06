@@ -27,6 +27,17 @@ predict_optim <- function(pars,mod,data,dv = "DV", pred = "PRED",ofv,p,
 
 ##' Fit a model to data using optim.
 ##' 
+##' @param mod a model object
+##' @param data a simulation data set
+##' @param dv name of column in \code{data} containing the dependent variable
+##' @param pred name of the column in the simulated data containing prediction 
+##' matching \code{dv}
+##' @param evid name of column in \code{data} containing event ID information
+##' @param ofv an \code{R} function that calculates the objective function
+##' @param par a parset object
+##' @param ... passed to \code{\link{optim}}
+##' 
+##' 
 ##' @export
 ##' @rdname fit_optim
 fit_optim <- function(mod,data=NULL,dv="DV",pred="DV",evid="evid",ofv,par,...) {
@@ -65,8 +76,6 @@ fit_optim <- function(mod,data=NULL,dv="DV",pred="DV",evid="evid",ofv,par,...) {
 }
 
 
-##' Fit a model to data using minqa::newuoa
-##' 
 ##' @export
 ##' @rdname fit_optim
 fit_minqa <- function(mod,data=NULL,dv="DV",pred="DV",evid="evid",ofv,par,...) {

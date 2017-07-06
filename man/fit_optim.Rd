@@ -11,8 +11,24 @@ fit_optim(mod, data = NULL, dv = "DV", pred = "DV", evid = "evid", ofv,
 fit_minqa(mod, data = NULL, dv = "DV", pred = "DV", evid = "evid", ofv,
   par, ...)
 }
+\arguments{
+\item{mod}{a model object}
+
+\item{data}{a simulation data set}
+
+\item{dv}{name of column in \code{data} containing the dependent variable}
+
+\item{pred}{name of the column in the simulated data containing prediction 
+matching \code{dv}}
+
+\item{evid}{name of column in \code{data} containing event ID information}
+
+\item{ofv}{an \code{R} function that calculates the objective function}
+
+\item{par}{a parset object}
+
+\item{...}{passed to \code{\link{optim}}}
+}
 \description{
 Fit a model to data using optim.
-
-Fit a model to data using minqa::newuoa
 }
