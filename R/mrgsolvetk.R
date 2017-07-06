@@ -82,6 +82,16 @@ sens_norm_ <- function(mod,.dots) {
 ##' the parameters involved in sensitivity
 ##' analysis.
 ##' 
+##' @examples
+##' mod <- mrgsolve:::house()
+##' out <- 
+##'   mod %>%
+##'   ev(amt=100) %>%
+##'   Req(CP) %>%
+##'   sens_seq(CL = seq(1,2,0.2), VC = seq(10,40,5))
+##'   
+##' out
+##' 
 ##' @seealso \code{\link{sens_grid}}
 ##' @export
 sens_seq <- function(mod,n=100,...) {
@@ -128,9 +138,10 @@ sens_seq_ <- function(mod,.dots) {
 ##'   mod %>%
 ##'   ev(amt=100) %>%
 ##'   Req(CP) %>%
-##'   sens_seq(CL = seq(1,2,0.2), VC = seq(10,40,5))
+##'   sens_grid(CL = seq(1,2,0.2), VC = seq(10,40,5))
 ##'   
 ##' out
+##' 
 ##' 
 ##' @seealso \code{\link{sens_seq}}
 ##' @export
@@ -241,7 +252,6 @@ mvuniform <- function(n,par,a,b,...) {
   out <- dplyr::bind_cols(out)
   out
 }
-
 
 strip_args <- function(x) {
   x@args$data <- NULL
