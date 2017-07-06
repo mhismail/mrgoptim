@@ -4,10 +4,11 @@
 \alias{sens_unif_idata}
 \title{Generate idata sets for sens_unif.}
 \usage{
-sens_unif_idata(pars, lower = 0.2, upper = 3, n = 100, spread = TRUE)
+sens_unif_idata(pars, lower = 0.2, upper = 3, n = 100, spread = TRUE,
+  ...)
 }
 \arguments{
-\item{pars}{character vector of parameter names}
+\item{pars}{named numeric vector of parameters}
 
 \item{lower}{multiplier for lower bound}
 
@@ -16,7 +17,27 @@ sens_unif_idata(pars, lower = 0.2, upper = 3, n = 100, spread = TRUE)
 \item{n}{number of replicates to simulate}
 
 \item{spread}{if \code{TRUE} the data frame is returned in wide format}
+
+\item{...}{not used}
 }
 \description{
 Generate idata sets for sens_unif.
+}
+\details{
+It is important to note that \code{lower} and \code{upper} do
+not correspond to the \code{min} and \code{max} arguments
+for \code{\link{runif}}. Rather, they modify the current value
+of the parameter in a multiplicative way.  For example, to 
+simulate from uniform distributions that range from 
+half the parameter value to double the parameter value,
+use \code{lower} equal to \code{0.5} and \code{upper}
+equal to \code{2}.
+}
+\examples{
+pars <- c(CL = 1, VC = 2.2)
+
+sens_unif_idata(pars, lower=0.67,upper=0.99, n=5)
+
+sens_unif_idata(pars, lower=0.67,upper=0.99, n=5, spread=FALSE)
+
 }

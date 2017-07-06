@@ -4,16 +4,18 @@
 \alias{sens_norm_idata}
 \title{Generate idata set for sens_norm.}
 \usage{
-sens_norm_idata(pars, cv, n = 100, spread = TRUE)
+sens_norm_idata(pars, cv, n = 100, spread = TRUE, ...)
 }
 \arguments{
-\item{pars}{character vector of parameter names}
+\item{pars}{named numeric vector of parameters}
 
 \item{cv}{coefficient of variation}
 
 \item{n}{number of replicates to simulate}
 
 \item{spread}{if \code{TRUE} the data frame is returned in wide format}
+
+\item{...}{not used}
 }
 \description{
 Generate idata set for sens_norm.

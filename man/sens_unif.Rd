@@ -24,3 +24,13 @@ model parameters to simulate}
 \description{
 Sensitivity analysis with uniform distribtion.
 }
+\details{
+See the \code{spread} argument to \code{\link{sens_unif_idata}}.
+}
+\examples{
+mod <- mrgsolve:::house()
+
+out <- sens_unif(mod, n=10, pars="CL,VC")
+
+
+}

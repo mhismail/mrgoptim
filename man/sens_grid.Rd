@@ -17,3 +17,23 @@ passed to mrgsim}
 \description{
 Sensitivity analysis with all parameter combinations.
 }
+\details{
+In contrast to other sensitivity analysis functions, 
+\code{\link{sens_grid}} always returns data in 
+wide format with respect to parameters involved
+in the sensitivity analysis.
+}
+\examples{
+mod <- mrgsolve:::house()
+out <- 
+  mod \%>\%
+  ev(amt=100) \%>\%
+  Req(CP) \%>\%
+  sens_seq(CL = seq(1,2,0.2), VC = seq(10,40,5))
+  
+out
+
+}
+\seealso{
+\code{\link{sens_seq}}
+}

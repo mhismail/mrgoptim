@@ -22,3 +22,13 @@ passed to mrgsim}
 \description{
 Sensitivity analysis with parameter sequences.
 }
+\details{
+In contrast to other simulation functions, 
+\code{\link{sens_seq}} always returns 
+data in long format with respect to 
+the parameters involved in sensitivity
+analysis.
+}
+\seealso{
+\code{\link{sens_grid}}
+}

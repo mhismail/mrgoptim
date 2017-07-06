@@ -7,13 +7,24 @@
 ##' model parameters to simulate
 ##' @param ... passed to \code{\link{sens_norm_idata}} and to mrgism
 ##' 
+##' @details
+##' See the \code{spread} argument to \code{\link{sens_unif_idata}}. 
+##' 
+##' @examples
+##' mod <- mrgsolve:::house()
+##' 
+##' out <- sens_unif(mod, n=10, pars="CL,VC")
+##' 
+##' 
 ##' @export
 sens_unif <- function(mod,n=100,pars=names(param(mod)),...) {
   pars <- cvec_cs(pars)
   pars <- as.numeric(param(mod))[pars]
   data <- sens_unif_idata(pars=pars,n=n,...)
   mod <- strip_args(mod)
-  out <- mrgsim(mod,idata=data,carry.out=".n",obsonly=TRUE,...)
+  out <- mrgsim(mod,
+                idata=mutate(data,par=NULL),
+                carry.out=".n",obsonly=TRUE,...)
   out <- dplyr::left_join(tibble::as_data_frame(out),data,by=".n")
   out
 }
@@ -34,13 +45,18 @@ sens_unif_ <- function(mod,.dots) {
 ##' parameters to simulate
 ##' @param ... passed to \code{\link{sens_norm_idata}} and to mrgism
 ##' 
+##' @details
+##' See the \code{spread} argument to \code{\link{sens_norm_idata}}. 
+##' 
 ##' @export
 sens_norm <- function(mod,n=100,pars=names(param(mod)),...) {
   pars <- cvec_cs(pars)
   pars <- as.numeric(param(mod))[pars]
   data <- sens_norm_idata(n=n,pars=pars,...)
   mod <- strip_args(mod)
-  out <- mrgsim(mod,idata=data,carry.out=".n",obsonly=TRUE,...)
+  out <- mrgsim(mod,
+                idata=mutate(data,par=NULL),
+                carry.out=".n",obsonly=TRUE,...)
   out <- dplyr::left_join(tibble::as_data_frame(out),data,by=".n")
   out
 }
@@ -59,7 +75,14 @@ sens_norm_ <- function(mod,.dots) {
 ##' @param ... named sequences of parameters; also arguments
 ##' passed to mrgsim
 ##' 
+##' @details
+##' In contrast to other simulation functions, 
+##' \code{\link{sens_seq}} always returns 
+##' data in long format with respect to 
+##' the parameters involved in sensitivity
+##' analysis.
 ##' 
+##' @seealso \code{\link{sens_grid}}
 ##' @export
 sens_seq <- function(mod,n=100,...) {
   args <- list(...)
@@ -70,7 +93,7 @@ sens_seq <- function(mod,n=100,...) {
     idata <- tibble::data_frame(ID=seq_along(value),y=ID,x=value)
     names(idata) <- c("ID", ".n", pars[i])
     mod <- strip_args(mod)
-    out <- tibble::as_data_frame(mrgsim(mod,idata=idata,carry.out='.n',...))
+    out <- mrgsim(mod,idata=idata,carry.out='.n',...)
     out <- mutate(out,param = pars[i])
     names(idata)[3] <- "value" 
     left_join(out,idata,by=c("ID", ".n"))
@@ -93,7 +116,23 @@ sens_seq_ <- function(mod,.dots) {
 ##' @param ... named sequences of parameters; also arguments
 ##' passed to mrgsim
 ##' 
+##' @details 
+##' In contrast to other sensitivity analysis functions, 
+##' \code{\link{sens_grid}} always returns data in 
+##' wide format with respect to parameters involved
+##' in the sensitivity analysis.
 ##' 
+##' @examples
+##' mod <- mrgsolve:::house()
+##' out <- 
+##'   mod %>%
+##'   ev(amt=100) %>%
+##'   Req(CP) %>%
+##'   sens_seq(CL = seq(1,2,0.2), VC = seq(10,40,5))
+##'   
+##' out
+##' 
+##' @seealso \code{\link{sens_seq}}
 ##' @export
 sens_grid <- function(mod,n=100,...) {
   args <- list(...)
@@ -102,8 +141,8 @@ sens_grid <- function(mod,n=100,...) {
   idata <- do.call(expand.grid,args)
   idata <- mutate(idata,ID = seq_len(n()), .n=ID)
   mod <- strip_args(mod)
-  out <- as_data_frame(mrgsim(mod,idata=idata,carry.out=c('.n',pars),...))
-  out
+  out <- mrgsim(mod,idata=idata,carry.out=c('.n',pars),...)
+  as_data_frame(out)
 }
 
 
@@ -132,14 +171,32 @@ sens_covset <- function(mod,covset,n=100,...) {
 
 ##' Generate idata sets for sens_unif.
 ##' 
-##' @param pars character vector of parameter names
+##' @param pars named numeric vector of parameters
 ##' @param lower multiplier for lower bound
 ##' @param upper multiplier for upper bound
 ##' @param n number of replicates to simulate
 ##' @param spread if \code{TRUE} the data frame is returned in wide format
+##' @param ... not used
+##' 
+##' @details
+##' It is important to note that \code{lower} and \code{upper} do
+##' not correspond to the \code{min} and \code{max} arguments
+##' for \code{\link{runif}}. Rather, they modify the current value
+##' of the parameter in a multiplicative way.  For example, to 
+##' simulate from uniform distributions that range from 
+##' half the parameter value to double the parameter value,
+##' use \code{lower} equal to \code{0.5} and \code{upper}
+##' equal to \code{2}.
+##' 
+##' @examples
+##' pars <- c(CL = 1, VC = 2.2)
+##' 
+##' sens_unif_idata(pars, lower=0.67,upper=0.99, n=5)
+##' 
+##' sens_unif_idata(pars, lower=0.67,upper=0.99, n=5, spread=FALSE)
+##' 
 ##' @export
-sens_unif_idata <- function(pars,lower=0.2,upper=3,n=100,
-                            spread=TRUE) {
+sens_unif_idata <- function(pars,lower=0.2,upper=3,n=100,spread=TRUE,...) {
   out <- mvuniform(n,pars,pars*lower,pars*upper)
   out <- cbind(data_frame(.n=1:n),out)
   if(!spread) {
@@ -151,14 +208,15 @@ sens_unif_idata <- function(pars,lower=0.2,upper=3,n=100,
 
 ##' Generate idata set for sens_norm. 
 ##' 
-##' @param pars character vector of parameter names
+##' @param pars named numeric vector of parameters
 ##' @param cv coefficient of variation 
 ##' @param n number of replicates to simulate
 ##' @param spread if \code{TRUE} the data frame is returned in wide format
+##' @param ... not used
 ##' 
 ##' @export
 sens_norm_idata <- function(pars,cv,n=100,
-                            spread=TRUE) {
+                            spread=TRUE,...) {
   np <- length(pars)
   cv <- diag(rep((cv/100)^2,np),nrow=np,ncol=np)
   out <- MASS::mvrnorm(n,log(pars),cv)

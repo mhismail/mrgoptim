@@ -24,3 +24,6 @@ parameters to simulate}
 \description{
 Sensitivity analysis with log-normal distributions.
 }
+\details{
+See the \code{spread} argument to \code{\link{sens_norm_idata}}.
+}
