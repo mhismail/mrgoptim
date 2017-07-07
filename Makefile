@@ -30,7 +30,6 @@ doc:
 build:
 	R CMD build --md5 $(PKGDIR)
 
-
 install:
 	R CMD INSTALL --install-tests ${TARBALL}
 
