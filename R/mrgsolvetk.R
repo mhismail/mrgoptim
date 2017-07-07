@@ -15,7 +15,7 @@
 ##' 
 ##' out <- sens_unif(mod, n=10, pars="CL,VC")
 ##' 
-##' @seealso \code{\link{sens_unif_idata}} \code{\link{covset}}
+##' @seealso \code{\link{sens_unif_idata}} \code{\link[dmutate]{covset}}
 ##' 
 ##' @export
 sens_unif <- function(mod,n=100,pars=names(param(mod)),...) {

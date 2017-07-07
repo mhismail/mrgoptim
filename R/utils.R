@@ -136,6 +136,11 @@ example <- function(x) {
   system.file(file,package="mrgsim")
 }
 
+na2zero <- function(x) {
+  x[is.na(x)] <- 0
+  x
+}
+
 #
 # eval_ENV_block <- function(x,where,envir=new.env(),...) {
 #   .x <- try(eval(parse(text=x),envir=envir))
