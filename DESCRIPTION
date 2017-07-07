@@ -26,4 +26,5 @@ Suggests:
   minqa
 Remotes:
   github::kylebaron/optimhelp
+  github::metrumresearchgroup/mrgsolve
 RoxygenNote: 6.0.1
