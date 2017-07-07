@@ -12,4 +12,5 @@ os:
 script:
   - export _R_CHECK_FORCE_SUGGESTS_=0
   - mkdir Rchecks
+  - Rscript -e 'devtools::install_github("kylebaron/optimhelp")'
   - make travis
