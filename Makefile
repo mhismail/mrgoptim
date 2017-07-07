@@ -6,8 +6,6 @@ TARBALL=${PACKAGE}_${VERSION}.tar.gz
 PKGDIR=.
 CHKDIR=Rchecks
 
-ec:
-	echo ${VERSION}
 
 cran:
 	make doc
