@@ -24,4 +24,6 @@ Imports:
 Suggests:
   dmutate,
   minqa
+Remotes:
+  kylebaron/optimhelp
 RoxygenNote: 6.0.1
