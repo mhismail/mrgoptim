@@ -26,6 +26,4 @@ Suggests:
   minqa
 Remotes:
   github::kylebaron/optimhelp
-  git::https://github.com/metrumresearchgroup/mrgsolve.git
-  git::https://github.com/kylebmetrum/dmutate.git
 RoxygenNote: 6.0.1
