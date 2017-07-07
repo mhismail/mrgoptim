@@ -12,11 +12,11 @@ ec:
 cran:
 	make doc
 	make build
-	R CMD CHECK --as-cran ${TARBALL} -o ${CHKDIR}
+	R CMD check --as-cran ${TARBALL} -o ${CHKDIR}
 
 travis:
 	make build
-	R CMD CHECK ${TARBALL}
+	R CMD check ${TARBALL}
 
 all:
 	make doc
