@@ -25,7 +25,7 @@ Suggests:
   dmutate,
   minqa
 Remotes:
-  kylebaron/optimhelp
-  metrumresearchgroup/mrgsolve
-  kylebaron/dmutate
+  git::https://github.com/kylebaron/optimhelp
+  git::https://github.com/metrumresearchgroup/mrgsolve
+  git::https://github.com/kylebmetrum/dmutate
 RoxygenNote: 6.0.1
