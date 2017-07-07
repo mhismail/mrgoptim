@@ -14,6 +14,9 @@ cran:
 	make build
 	R CMD CHECK --as-cran ${TARBALL} -o ${CHKDIR}
 
+travis:
+	make cran
+
 all:
 	make doc
 	make build
