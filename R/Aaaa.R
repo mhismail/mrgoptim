@@ -1,5 +1,5 @@
 ##' @importFrom dplyr mutate bind_rows filter bind_cols
-##' @importFrom dplyr left_join 
+##' @importFrom dplyr left_join
 ##' @importFrom tidyr gather spread
 ##' @importFrom MASS mvrnorm
 ##' @importFrom stats setNames

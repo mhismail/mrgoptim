@@ -2,6 +2,7 @@
 
 S3method(nonull,default)
 S3method(nonull,list)
+export(ev_seq)
 export(fit_minqa)
 export(fit_optim)
 export(sens_covset)

@@ -269,3 +269,43 @@ strip_args <- function(x) {
   x
 }
 
+
+##' Schedule a sequence of event objects.
+##' 
+##' @param ... event objects
+##' @param .dots list of event objects
+##' @export
+ev_seq <- function(...,.dots=list()) {
+  
+  evs <- c(list(...),.dots)
+  evs <- lapply(evs,as.data.frame)
+  df <- bind_rows(evs)
+  
+  tran2zero <- c("ii", "addl", "rate", "ss")
+  
+  if(any(names(df) %in% tran2zero)) {
+    where <- which(names(df) %in% tran2zero)
+    df[,where] <- lapply(df[,where],na2zero)
+  }
+  
+  miss <- sapply(df,is.na)
+  if(any(miss)) {
+    which_miss <- apply(miss,MARGIN=2,FUN=function(x) any(x))
+    miss <- paste(colnames(miss)[which_miss],collapse=",")
+    stop("incompatible columns ", miss, call.=FALSE) 
+  }
+  
+  for(i in seq_along(rownames(df))[-1]) {
+    j <- i-1
+    
+    df[i,"time"] <- df[j,"time"] + df[i,"time"] + df[j,"ii"]
+    
+    if(df[j,"addl"] > 0) {
+      df[i,"time"] <- df[i,"time"] + df[j,"ii"]*df[j,"addl"]
+    } 
+  }
+  
+  df <- filter(df,evid > 0)
+  
+  as.ev(df)
+}
