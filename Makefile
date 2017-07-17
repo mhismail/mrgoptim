@@ -21,6 +21,10 @@ all:
 	make build
 	make install
 
+test:
+	R CMD INSTALL ${PKGDIR}
+	Rscript -e 'library(testthat)' -e 'test_dir("tests/testthat")'
+
 .PHONY: doc
 doc:
 	Rscript -e 'library(devtools); document("${PKGDIR}")'

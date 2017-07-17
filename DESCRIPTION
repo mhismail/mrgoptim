@@ -15,7 +15,8 @@ Description: Perform sensitivity analyses and estimate parameters for your 'mrgs
 License: GPL (>=2)
 Depends: 
   mrgsolve,
-  MASS
+  MASS,
+  methods
 Imports:
   dplyr,
   tibble,
@@ -23,7 +24,8 @@ Imports:
   tidyr
 Suggests:
   dmutate,
-  minqa
+  minqa,
+  testthat
 Remotes:
   github::kylebaron/optimhelp,
   github::metrumresearchgroup/mrgsolve
