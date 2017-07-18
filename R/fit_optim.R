@@ -20,7 +20,9 @@ predict_optim <- function(pars,mod,data,dv = "DV", pred = "PRED",ofv,p,
     stop("failure in predict function",call.=FALSE) 
   }
   if(get_pred) return(as.data.frame(dplyr::as_data_frame(out)))
-  ofv(data[dvindex,dv],unlist(out[dvindex,pred],use.names=FALSE),p)
+  ofv(unlist(data[dvindex,dv],use.names=FALSE),
+      unlist(out[dvindex,pred],use.names=FALSE),
+      p)
 }
 
 
@@ -59,6 +61,7 @@ fit_optim <- function(mod,data=NULL,dv="DV",pred="DV",evid="evid",ofv,par,...) {
   if(!exists(evid,data)) {
     stop("please identify evid column in data set", call.=FALSE) 
   }
+  mod <- obsonly(mod,FALSE)
   
   fit <- optim(par=initials(par),
                fn=predict_optim,
@@ -98,6 +101,7 @@ fit_minqa <- function(mod,data=NULL,dv="DV",pred="DV",evid="evid",ofv,par,...) {
   if(!exists(evid,data)) {
     stop("please identify evid column in data set", call.=FALSE) 
   }
+  mod <- obsonly(mod,FALSE)
   
   fit <- minqa::newuoa(par=initials(par),
                        fn=predict_optim,
