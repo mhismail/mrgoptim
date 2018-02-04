@@ -13,7 +13,7 @@ sens_covset(mod, covset, .n = 100, univariate = FALSE, ...)
 
 \item{.n}{the number of replicates to simulate}
 
-\item{...}{passed to mutate_random and mrgsim}
+\item{...}{passed to \code{mutate_random} and \code{mrgsim}}
 }
 \description{
 Sensitivity analysis using covset objects

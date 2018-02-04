@@ -3,7 +3,7 @@
 ##' @param mod the model object
 ##' @param covset a covset object
 ##' @param .n the number of replicates to simulate
-##' @param ... passed to mutate_random and mrgsim
+##' @param ... passed to \code{mutate_random} and \code{mrgsim}
 ##' 
 ##' @seealso \code{\link{sens_unif}} \code{\link{sens_norm}} 
 ##' 
@@ -24,7 +24,7 @@ sens_covset <- function(mod,covset,.n=100,univariate = FALSE, ...) {
   assert_that(inherits(covset,"covset"))
   mod <- strip_args(mod) %>% obsonly
   idata <- data_frame(ID = seq(.n))
-  idata <- mutate_random(idata,covset,...)
+  idata <- dmutate::mutate_random(idata,covset,...)
   if(univariate) {
     idata <- col_sep(idata)
     return(sens_univariate(mod, idata, ...))

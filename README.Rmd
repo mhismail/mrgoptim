@@ -19,9 +19,9 @@ A toolkit to be used with `mrgsolve`
 library(dplyr)
 library(mrgsolve)
 library(mrgsolvetk)
-library(dmutate)
 
 mod <- mread_cache("pk1cmt",modlib())
+
 mod <- ev(mod, amt=100) %>% Req(CP)
 
 param(mod)
