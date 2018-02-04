@@ -8,13 +8,14 @@ Examples
 ========
 
 ``` r
+library(ggplot2)
 library(dplyr)
 library(mrgsolve)
 library(mrgsolvetk)
 
 mod <- mread_cache("pk1cmt",modlib())
 
-mod <- ev(mod, amt=100) %>% Req(CP)
+mod <- ev(mod, amt=100) %>% Req(CP) %>% update(end = 48, delta = 0.25)
 
 param(mod)
 ```
@@ -35,25 +36,67 @@ Sensitivity analyses
 -   `lower` and `upper` scale the parameter value to provide `a` and `b` arguments to `runif`
 
 ``` r
-mod %>% 
+out <- 
+  mod %>% 
   select(CL,VC,KA1) %>%
   sens_unif(.n=10, lower=0.2, upper=3)
+
+out
 ```
 
-    . # A tibble: 250 x 8
+    . # A tibble: 1,930 x 8
     .       ID  time    CP    CL    VC   KA1 name         value
     .    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <chr>        <dbl>
-    .  1  1.00  0    0     0.768  55.0 0.213 multivariate  1.00
-    .  2  1.00  1.00 0.346 0.768  55.0 0.213 multivariate  1.00
-    .  3  1.00  2.00 0.621 0.768  55.0 0.213 multivariate  1.00
-    .  4  1.00  3.00 0.839 0.768  55.0 0.213 multivariate  1.00
-    .  5  1.00  4.00 1.01  0.768  55.0 0.213 multivariate  1.00
-    .  6  1.00  5.00 1.14  0.768  55.0 0.213 multivariate  1.00
-    .  7  1.00  6.00 1.25  0.768  55.0 0.213 multivariate  1.00
-    .  8  1.00  7.00 1.33  0.768  55.0 0.213 multivariate  1.00
-    .  9  1.00  8.00 1.39  0.768  55.0 0.213 multivariate  1.00
-    . 10  1.00  9.00 1.43  0.768  55.0 0.213 multivariate  1.00
-    . # ... with 240 more rows
+    .  1  1.00 0     0      2.99  38.5 0.259 multivariate  1.00
+    .  2  1.00 0.250 0.161  2.99  38.5 0.259 multivariate  1.00
+    .  3  1.00 0.500 0.309  2.99  38.5 0.259 multivariate  1.00
+    .  4  1.00 0.750 0.445  2.99  38.5 0.259 multivariate  1.00
+    .  5  1.00 1.00  0.569  2.99  38.5 0.259 multivariate  1.00
+    .  6  1.00 1.25  0.683  2.99  38.5 0.259 multivariate  1.00
+    .  7  1.00 1.50  0.786  2.99  38.5 0.259 multivariate  1.00
+    .  8  1.00 1.75  0.880  2.99  38.5 0.259 multivariate  1.00
+    .  9  1.00 2.00  0.966  2.99  38.5 0.259 multivariate  1.00
+    . 10  1.00 2.25  1.04   2.99  38.5 0.259 multivariate  1.00
+    . # ... with 1,920 more rows
+
+``` r
+ggplot(out, aes(time, CP, group = ID, col = VC)) + geom_line()
+```
+
+![](inst/maintenance/img/README-unnamed-chunk-3-1.png)
+
+We can also make a univariate version of this
+
+``` r
+out <- 
+  mod %>% 
+  select(CL,VC,KA1) %>%
+  sens_unif(.n=10, lower=0.2, upper=3, univariate = TRUE)
+
+out
+```
+
+    . # A tibble: 5,790 x 5
+    .       ID  time    CP name  value
+    .    <dbl> <dbl> <dbl> <chr> <dbl>
+    .  1  1.00 0      0    CL     2.39
+    .  2  1.00 0.250  1.09 CL     2.39
+    .  3  1.00 0.500  1.90 CL     2.39
+    .  4  1.00 0.750  2.51 CL     2.39
+    .  5  1.00 1.00   2.95 CL     2.39
+    .  6  1.00 1.25   3.26 CL     2.39
+    .  7  1.00 1.50   3.48 CL     2.39
+    .  8  1.00 1.75   3.62 CL     2.39
+    .  9  1.00 2.00   3.70 CL     2.39
+    . 10  1.00 2.25   3.74 CL     2.39
+    . # ... with 5,780 more rows
+
+``` r
+ggplot(out, aes(time, CP, group = ID)) + 
+  geom_line() + facet_wrap(~name)
+```
+
+![](inst/maintenance/img/README-unnamed-chunk-4-1.png)
 
 ### `sens_norm`
 
@@ -65,20 +108,20 @@ mod %>%
   sens_norm(.n=10, cv=30)
 ```
 
-    . # A tibble: 250 x 7
+    . # A tibble: 1,930 x 7
     .       ID  time    CP    CL    VC name         value
     .    <dbl> <dbl> <dbl> <dbl> <dbl> <chr>        <dbl>
-    .  1  1.00  0     0    0.774  21.8 multivariate  1.00
-    .  2  1.00  1.00  2.84 0.774  21.8 multivariate  1.00
-    .  3  1.00  2.00  3.78 0.774  21.8 multivariate  1.00
-    .  4  1.00  3.00  4.04 0.774  21.8 multivariate  1.00
-    .  5  1.00  4.00  4.04 0.774  21.8 multivariate  1.00
-    .  6  1.00  5.00  3.95 0.774  21.8 multivariate  1.00
-    .  7  1.00  6.00  3.83 0.774  21.8 multivariate  1.00
-    .  8  1.00  7.00  3.70 0.774  21.8 multivariate  1.00
-    .  9  1.00  8.00  3.58 0.774  21.8 multivariate  1.00
-    . 10  1.00  9.00  3.45 0.774  21.8 multivariate  1.00
-    . # ... with 240 more rows
+    .  1  1.00 0      0    0.992  20.5 multivariate  1.00
+    .  2  1.00 0.250  1.07 0.992  20.5 multivariate  1.00
+    .  3  1.00 0.500  1.89 0.992  20.5 multivariate  1.00
+    .  4  1.00 0.750  2.52 0.992  20.5 multivariate  1.00
+    .  5  1.00 1.00   3.00 0.992  20.5 multivariate  1.00
+    .  6  1.00 1.25   3.35 0.992  20.5 multivariate  1.00
+    .  7  1.00 1.50   3.62 0.992  20.5 multivariate  1.00
+    .  8  1.00 1.75   3.82 0.992  20.5 multivariate  1.00
+    .  9  1.00 2.00   3.96 0.992  20.5 multivariate  1.00
+    . 10  1.00 2.25   4.05 0.992  20.5 multivariate  1.00
+    . # ... with 1,920 more rows
 
 ### `sens_seq`
 
@@ -88,20 +131,20 @@ mod %>%
 mod %>% sens_seq(CL = seq(2,12,2), VC = seq(30,100,10))
 ```
 
-    . # A tibble: 364 x 5
-    .       ID  time    CP param value
+    . # A tibble: 2,716 x 5
+    .       ID  time    CP name  value
     .    <dbl> <dbl> <dbl> <chr> <dbl>
-    .  1  1.00  0     0    CL     2.00
-    .  2  1.00  0     0    CL     2.00
-    .  3  1.00  1.00  2.98 CL     2.00
-    .  4  1.00  2.00  3.80 CL     2.00
-    .  5  1.00  3.00  3.84 CL     2.00
-    .  6  1.00  4.00  3.62 CL     2.00
-    .  7  1.00  5.00  3.33 CL     2.00
-    .  8  1.00  6.00  3.04 CL     2.00
-    .  9  1.00  7.00  2.75 CL     2.00
-    . 10  1.00  8.00  2.49 CL     2.00
-    . # ... with 354 more rows
+    .  1  1.00 0      0    CL     2.00
+    .  2  1.00 0      0    CL     2.00
+    .  3  1.00 0.250  1.09 CL     2.00
+    .  4  1.00 0.500  1.91 CL     2.00
+    .  5  1.00 0.750  2.53 CL     2.00
+    .  6  1.00 1.00   2.98 CL     2.00
+    .  7  1.00 1.25   3.31 CL     2.00
+    .  8  1.00 1.50   3.54 CL     2.00
+    .  9  1.00 1.75   3.70 CL     2.00
+    . 10  1.00 2.00   3.80 CL     2.00
+    . # ... with 2,706 more rows
 
 ### `sens_spaced`
 
@@ -113,20 +156,20 @@ mod %>%
   sens_spaced(.n = 5, .factor = 4)
 ```
 
-    . # A tibble: 250 x 5
+    . # A tibble: 1,930 x 5
     .       ID  time    CP name  value
     .    <dbl> <dbl> <dbl> <chr> <dbl>
-    .  1  1.00  0     0    CL    0.250
-    .  2  1.00  1.00  3.14 CL    0.250
-    .  3  1.00  2.00  4.25 CL    0.250
-    .  4  1.00  3.00  4.62 CL    0.250
-    .  5  1.00  4.00  4.72 CL    0.250
-    .  6  1.00  5.00  4.72 CL    0.250
-    .  7  1.00  6.00  4.68 CL    0.250
-    .  8  1.00  7.00  4.63 CL    0.250
-    .  9  1.00  8.00  4.58 CL    0.250
-    . 10  1.00  9.00  4.52 CL    0.250
-    . # ... with 240 more rows
+    .  1  1.00 0      0    CL    0.250
+    .  2  1.00 0.250  1.10 CL    0.250
+    .  3  1.00 0.500  1.96 CL    0.250
+    .  4  1.00 0.750  2.62 CL    0.250
+    .  5  1.00 1.00   3.14 CL    0.250
+    .  6  1.00 1.25   3.53 CL    0.250
+    .  7  1.00 1.50   3.84 CL    0.250
+    .  8  1.00 1.75   4.07 CL    0.250
+    .  9  1.00 2.00   4.25 CL    0.250
+    . 10  1.00 2.25   4.39 CL    0.250
+    . # ... with 1,920 more rows
 
 or
 
@@ -135,20 +178,20 @@ mod %>%
   sens_spaced(.n = 5, .factor = 4, CL = c(0.4, 1.5), VC = c(10,50))
 ```
 
-    . # A tibble: 750 x 5
+    . # A tibble: 5,790 x 5
     .       ID  time    CP name  value
     .    <dbl> <dbl> <dbl> <chr> <dbl>
-    .  1  1.00  0     0    CL    0.250
-    .  2  1.00  1.00  3.14 CL    0.250
-    .  3  1.00  2.00  4.25 CL    0.250
-    .  4  1.00  3.00  4.62 CL    0.250
-    .  5  1.00  4.00  4.72 CL    0.250
-    .  6  1.00  5.00  4.72 CL    0.250
-    .  7  1.00  6.00  4.68 CL    0.250
-    .  8  1.00  7.00  4.63 CL    0.250
-    .  9  1.00  8.00  4.58 CL    0.250
-    . 10  1.00  9.00  4.52 CL    0.250
-    . # ... with 740 more rows
+    .  1  1.00 0      0    CL    0.250
+    .  2  1.00 0.250  1.10 CL    0.250
+    .  3  1.00 0.500  1.96 CL    0.250
+    .  4  1.00 0.750  2.62 CL    0.250
+    .  5  1.00 1.00   3.14 CL    0.250
+    .  6  1.00 1.25   3.53 CL    0.250
+    .  7  1.00 1.50   3.84 CL    0.250
+    .  8  1.00 1.75   4.07 CL    0.250
+    .  9  1.00 2.00   4.25 CL    0.250
+    . 10  1.00 2.25   4.39 CL    0.250
+    . # ... with 5,780 more rows
 
 ### `sens_grid`
 
@@ -158,20 +201,20 @@ mod %>%
 mod %>%  sens_grid(CL = seq(1,10,1), VC = seq(20,40,5))
 ```
 
-    . # A tibble: 1,250 x 7
+    . # A tibble: 9,650 x 7
     .       ID  time    CP    CL    VC name         value
     .    <dbl> <dbl> <dbl> <dbl> <dbl> <chr>        <dbl>
-    .  1  1.00  0     0     1.00  20.0 multivariate  1.00
-    .  2  1.00  1.00  3.07  1.00  20.0 multivariate  1.00
-    .  3  1.00  2.00  4.05  1.00  20.0 multivariate  1.00
-    .  4  1.00  3.00  4.27  1.00  20.0 multivariate  1.00
-    .  5  1.00  4.00  4.21  1.00  20.0 multivariate  1.00
-    .  6  1.00  5.00  4.06  1.00  20.0 multivariate  1.00
-    .  7  1.00  6.00  3.89  1.00  20.0 multivariate  1.00
-    .  8  1.00  7.00  3.70  1.00  20.0 multivariate  1.00
-    .  9  1.00  8.00  3.53  1.00  20.0 multivariate  1.00
-    . 10  1.00  9.00  3.36  1.00  20.0 multivariate  1.00
-    . # ... with 1,240 more rows
+    .  1  1.00 0      0     1.00  20.0 multivariate  1.00
+    .  2  1.00 0.250  1.10  1.00  20.0 multivariate  1.00
+    .  3  1.00 0.500  1.94  1.00  20.0 multivariate  1.00
+    .  4  1.00 0.750  2.58  1.00  20.0 multivariate  1.00
+    .  5  1.00 1.00   3.07  1.00  20.0 multivariate  1.00
+    .  6  1.00 1.25   3.44  1.00  20.0 multivariate  1.00
+    .  7  1.00 1.50   3.71  1.00  20.0 multivariate  1.00
+    .  8  1.00 1.75   3.91  1.00  20.0 multivariate  1.00
+    .  9  1.00 2.00   4.05  1.00  20.0 multivariate  1.00
+    . 10  1.00 2.25   4.15  1.00  20.0 multivariate  1.00
+    . # ... with 9,640 more rows
 
 ### `sens_covset`
 
@@ -195,20 +238,20 @@ out <- mod %>% sens_covset(cov1)
 out
 ```
 
-    . # A tibble: 2,500 x 5
-    .       ID  time    CP    CL    VC
-    .    <dbl> <dbl> <dbl> <dbl> <dbl>
-    .  1  1.00  0     0     3.02  27.8
-    .  2  1.00  1.00  2.14  3.02  27.8
-    .  3  1.00  2.00  2.70  3.02  27.8
-    .  4  1.00  3.00  2.71  3.02  27.8
-    .  5  1.00  4.00  2.54  3.02  27.8
-    .  6  1.00  5.00  2.32  3.02  27.8
-    .  7  1.00  6.00  2.09  3.02  27.8
-    .  8  1.00  7.00  1.88  3.02  27.8
-    .  9  1.00  8.00  1.69  3.02  27.8
-    . 10  1.00  9.00  1.52  3.02  27.8
-    . # ... with 2,490 more rows
+    . # A tibble: 19,300 x 7
+    .       ID  time    CP    CL    VC name         value
+    .    <dbl> <dbl> <dbl> <dbl> <dbl> <chr>        <dbl>
+    .  1  1.00 0     0      2.06  58.0 multivariate  1.00
+    .  2  1.00 0.250 0.380  2.06  58.0 multivariate  1.00
+    .  3  1.00 0.500 0.672  2.06  58.0 multivariate  1.00
+    .  4  1.00 0.750 0.897  2.06  58.0 multivariate  1.00
+    .  5  1.00 1.00  1.07   2.06  58.0 multivariate  1.00
+    .  6  1.00 1.25  1.20   2.06  58.0 multivariate  1.00
+    .  7  1.00 1.50  1.30   2.06  58.0 multivariate  1.00
+    .  8  1.00 1.75  1.37   2.06  58.0 multivariate  1.00
+    .  9  1.00 2.00  1.42   2.06  58.0 multivariate  1.00
+    . 10  1.00 2.25  1.46   2.06  58.0 multivariate  1.00
+    . # ... with 19,290 more rows
 
 ``` r
 distinct(out,ID,CL,VC)
@@ -217,16 +260,16 @@ distinct(out,ID,CL,VC)
     . # A tibble: 100 x 3
     .       ID    CL    VC
     .    <dbl> <dbl> <dbl>
-    .  1  1.00  3.02  27.8
-    .  2  2.00  3.41  49.4
-    .  3  3.00  1.49  38.2
-    .  4  4.00  3.31  63.8
-    .  5  5.00  2.23  58.8
-    .  6  6.00  1.68  75.1
-    .  7  7.00  2.62  37.0
-    .  8  8.00  1.53  75.6
-    .  9  9.00  2.48  43.9
-    . 10 10.0   3.40  58.7
+    .  1  1.00  2.06  58.0
+    .  2  2.00  2.75  64.3
+    .  3  3.00  2.28  14.9
+    .  4  4.00  2.18  50.7
+    .  5  5.00  2.16  82.0
+    .  6  6.00  2.13  56.5
+    .  7  7.00  3.19  65.3
+    .  8  8.00  3.04  35.8
+    .  9  9.00  2.72 104  
+    . 10 10.0   2.52  17.0
     . # ... with 90 more rows
 
 Estimation `stats::optim`
@@ -271,9 +314,9 @@ Fit
 ---
 
 -   The workflow is the same as when we simulate
-    -   Get the model ready
-    -   Define the dta set
-    -   Pipe to `fit_optim` rather than `mrgsim`
+-   Get the model ready
+-   Define the dta set
+-   Pipe to `fit_optim` rather than `mrgsim`
 -   Here, just fit `ID==3`
 
 ``` r
@@ -303,7 +346,7 @@ ggplot(data=fit$tab) +
   geom_line(aes(time,PRED)) 
 ```
 
-![](inst/maintenance/img/README-unnamed-chunk-18-1.png)
+![](inst/maintenance/img/README-unnamed-chunk-19-1.png)
 
 With fixed parameter
 --------------------

@@ -5,7 +5,8 @@ author: ""
 date: ""
 ---
 ```{r,echo=FALSE}
-knitr::opts_chunk$set(comment='.', message=FALSE)
+knitr::opts_chunk$set(comment='.', message=FALSE, 
+                      fig.path="inst/maintenance/img/README-")
 ```
 
 
@@ -16,13 +17,14 @@ A toolkit to be used with `mrgsolve`
 
 # Examples
 ```{r}
+library(ggplot2)
 library(dplyr)
 library(mrgsolve)
 library(mrgsolvetk)
 
 mod <- mread_cache("pk1cmt",modlib())
 
-mod <- ev(mod, amt=100) %>% Req(CP)
+mod <- ev(mod, amt=100) %>% Req(CP) %>% update(end = 48, delta = 0.25)
 
 param(mod)
 ```
@@ -37,15 +39,36 @@ param(mod)
 - `lower` and `upper` scale the parameter value to provide `a` and `b` arguments to `runif`
 
 ```{r}
-mod %>% 
+out <- 
+  mod %>% 
   select(CL,VC,KA1) %>%
   sens_unif(.n=10, lower=0.2, upper=3)
-  
+
+out
+
+ggplot(out, aes(time, CP, group = ID, col = VC)) + geom_line()
 ```
+
+
+We can also make a univariate version of this
+
+```{r}
+out <- 
+  mod %>% 
+  select(CL,VC,KA1) %>%
+  sens_unif(.n=10, lower=0.2, upper=3, univariate = TRUE)
+
+out
+
+ggplot(out, aes(time, CP, group = ID)) + 
+  geom_line() + facet_wrap(~name)
+```
+
 
 ### `sens_norm`
 
-- Draw parameters from (log) normal distribution based on current parameter values and `%CV`
+- Draw parameters from (log) normal distribution based on current parameter 
+values and `%CV`
 
 ```{r}
 mod %>% 
@@ -145,9 +168,9 @@ par <- parset(log_par("CL", 0.1),
 
 ## Fit 
 - The workflow is the same as when we simulate
-    - Get the model ready
-    - Define the dta set
-    - Pipe to `fit_optim` rather than `mrgsim`
+- Get the model ready
+- Define the dta set
+- Pipe to `fit_optim` rather than `mrgsim`
 - Here, just fit `ID==3`
 
 ```{r}
@@ -164,7 +187,7 @@ fit$pars
 
 ## Plot
 
-```{r,fig.path="inst/maintenance/img/README-"}
+```{r}
 library(ggplot2)
 ggplot(data=fit$tab) + 
   geom_point(aes(time,conc)) +

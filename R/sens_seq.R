@@ -36,7 +36,7 @@ sens_seq <- function(mod,...) {
     names(idata) <- c("ID", pars[i])
     mod <- strip_args(mod)
     out <- mrgsim(mod,idata=idata, ...)
-    out <- mutate(out,param = pars[i])
+    out <- mutate(out,name = pars[i])
     names(idata)[2] <- "value" 
     left_join(out,idata,by=c("ID"))
   })

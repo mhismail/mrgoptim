@@ -30,5 +30,7 @@ sens_covset <- function(mod,covset,.n=100,univariate = FALSE, ...) {
     return(sens_univariate(mod, idata, ...))
   }
   out <- mrgsim(mod,idata=idata,obsonly=TRUE,...)
-  left_join(as_data_frame(out),idata,by = "ID")
+  out <- left_join(as_data_frame(out),idata,by = "ID")
+  mutate(out, name = "multivariate", value = 1)
+  
 }
