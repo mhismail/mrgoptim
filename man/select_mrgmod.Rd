@@ -2,9 +2,15 @@
 % Please edit documentation in R/mrgsolvetk.R
 \name{select.mrgmod}
 \alias{select.mrgmod}
+\alias{select_par}
+\alias{select_runs}
 \title{A select method for mrgmod objects}
 \usage{
 \method{select}{mrgmod}(.data, ...)
+
+select_par(.data, ...)
+
+select_runs(.data, ...)
 }
 \arguments{
 \item{.data}{the model object}

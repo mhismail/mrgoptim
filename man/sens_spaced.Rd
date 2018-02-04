@@ -2,9 +2,13 @@
 % Please edit documentation in R/sens_spaced.R
 \name{sens_spaced}
 \alias{sens_spaced}
+\alias{sens_spaced_factor}
 \title{Sensitivity analysis at evenly spaced values}
 \usage{
-sens_spaced(mod, ..., .n = 50)
+sens_spaced(mod, ..., .n = 5, .factor = NULL)
+
+sens_spaced_factor(mod, ..., pars = names(param(mod)), .n = 5,
+  .factor = 2)
 }
 \arguments{
 \item{mod}{the model object}
@@ -15,7 +19,8 @@ and maximum value for that parameter}
 \item{.n}{number of evenly spaced parameter values to simulate}
 }
 \description{
-Sensitivity analysis at evenly spaced values
+This is always a univariate (one parameter at a time) 
+sensitivity analysis.
 }
 \examples{
 mod <- mrgsolve:::house() \%>\% ev(amt = 100)

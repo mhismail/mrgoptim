@@ -17,3 +17,20 @@ select.mrgmod <- function(.data, ...) {
   .data
 }
 
+##' @rdname select_mrgmod
+##' @export
+select_par <- function(.data, ...) {
+  select.mrgmod(.data, ...)
+}
+##' @rdname select_mrgmod
+##' @export
+select_runs <- function(.data, ...) {
+  menu <- c(names(param(.data)), names(init(.data)))
+  values <- list(...)
+  vars <- select_vars(menu, names(values))
+  values <- values[vars]
+  .data@args$selected_runs <- values
+  .data
+}
+
+

@@ -28,7 +28,7 @@ sens_spaced <- function(mod, ...,  .n = 5, .factor = NULL) {
   sens_univariate(mod, data, ...)
 }
 
-##' @rdname 
+##' @rdname sens_spaced
 ##' @export
 sens_spaced_factor <- function(mod, ..., pars = names(param(mod)),
                                .n = 5, .factor = 2) {

@@ -1,7 +1,5 @@
 ---
-output:
-  md_document:
-    variant: markdown_github
+output: github_document
 title: ""
 author: ""
 date: ""
@@ -21,6 +19,7 @@ A toolkit to be used with `mrgsolve`
 library(dplyr)
 library(mrgsolve)
 library(mrgsolvetk)
+library(dmutate)
 
 mod <- mread_cache("pk1cmt",modlib())
 mod <- ev(mod, amt=100) %>% Req(CP)
@@ -38,7 +37,9 @@ param(mod)
 - `lower` and `upper` scale the parameter value to provide `a` and `b` arguments to `runif`
 
 ```{r}
-mod %>% sens_unif(n=10, pars="CL,VC,KA1", lower=0.2, upper=3)
+mod %>% 
+  select(CL,VC,KA1) %>%
+  sens_unif(.n=10, lower=0.2, upper=3)
   
 ```
 
@@ -47,7 +48,9 @@ mod %>% sens_unif(n=10, pars="CL,VC,KA1", lower=0.2, upper=3)
 - Draw parameters from (log) normal distribution based on current parameter values and `%CV`
 
 ```{r}
-mod %>% sens_norm(n=10, pars="CL,VC", cv=30)
+mod %>% 
+  select(CL,VC) %>%
+  sens_norm(.n=10, cv=30)
 ```
 
 ### `sens_seq`
@@ -57,6 +60,25 @@ mod %>% sens_norm(n=10, pars="CL,VC", cv=30)
 ```{r}
 mod %>% sens_seq(CL = seq(2,12,2), VC = seq(30,100,10))
 ```
+
+
+### `sens_spaced`
+
+- Create sets of parameters equally-spaced between two bounds
+
+```{r}
+mod %>%
+  select(CL,VC) %>%
+  sens_spaced(.n = 5, .factor = 4)
+```
+
+or
+
+```{r}
+mod %>%
+  sens_spaced(.n = 5, .factor = 4, CL = c(0.4, 1.5), VC = c(10,50))
+```
+
 
 
 ### `sens_grid`

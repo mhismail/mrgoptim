@@ -18,7 +18,8 @@ passed to mrgsim}
 \item{.dots}{list of arguments to pass to \code{\link{sens_seq}}}
 }
 \description{
-Sensitivity analysis with parameter sequences
+This is always a univariate (one parameter at a time) 
+sensitivity analysis.
 }
 \details{
 In contrast to other simulation functions, 

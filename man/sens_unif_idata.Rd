@@ -4,7 +4,7 @@
 \alias{sens_unif_idata}
 \title{Generate idata sets for sens_unif}
 \usage{
-sens_unif_idata(pars, lower = 0.2, upper = 3, .n = 100, ...)
+sens_unif_idata(pars, lower = 1/upper, upper = 3, .n = 100, ...)
 }
 \arguments{
 \item{pars}{named numeric vector of parameters}
