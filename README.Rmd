@@ -98,8 +98,11 @@ mod %>%
 or
 
 ```{r}
-mod %>%
-  sens_spaced(.n = 5, .factor = 4, CL = c(0.4, 1.5), VC = c(10,50))
+out <- 
+  mod %>%
+  sens_spaced(CL = c(0.5, 1.5), VC = c(10,40), .n = 5)
+
+ggplot(out, aes(time,CP, group = ID)) + geom_line() + facet_wrap(~name)
 ```
 
 
