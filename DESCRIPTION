@@ -1,7 +1,7 @@
 Package: mrgsolvetk
 Type: Package
 Title: Simulation Tool Kit for mrgsolve
-Version: 0.0.1
+Version: 0.0.2
 Date: 2017-05-30
 Authors@R: c(
     person("Kyle T", "Baron", "", "kyleb@metrumrg.com", c("aut", "cre")),
@@ -10,22 +10,26 @@ Authors@R: c(
 Maintainer: Kyle Baron <kyleb@metrumrg.com>
 URL: https://github.com/mrgsolve/mrgsolvetk
 BugReports: https://github.com/mrgsolve/mrgsolvetk/issues
-Copyright: Metrum Research Group, LLC 2017
+Copyright: Metrum Research Group, LLC 2018
 Description: Perform sensitivity analyses and estimate parameters for your 'mrgsolve' model.
 License: GPL (>=2)
 Depends: 
   mrgsolve,
-  MASS,
   methods
 Imports:
-  dplyr,
+  dplyr (>= 0.7.4),
   tibble,
   optimhelp,
-  tidyr
+  tidyr, 
+  purrr,
+  assertthat, 
+  rlang,
+  magrittr
 Suggests:
   dmutate,
   minqa,
-  testthat
+  testthat, 
+  MASS
 Remotes:
   github::kylebaron/optimhelp,
   github::metrumresearchgroup/mrgsolve

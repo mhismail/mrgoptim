@@ -141,6 +141,22 @@ na2zero <- function(x) {
   x
 }
 
+strip_args <- function(x) {
+  x@args$data <- NULL
+  x@args$idata <- NULL
+  x
+}
+
+col_sep <- function(x, target = names(x), all = "ID") {
+  target <- setdiff(target,all)
+  n <- length(target)
+  out <- vector("list", n)
+  for(i in seq(n)) {
+    out[[i]] <- 
+      mutate(x[,c(all,target[i])])
+  }
+  out
+}
 #
 # eval_ENV_block <- function(x,where,envir=new.env(),...) {
 #   .x <- try(eval(parse(text=x),envir=envir))

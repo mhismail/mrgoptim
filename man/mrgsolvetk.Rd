@@ -2,7 +2,28 @@
 % Please edit documentation in R/Aaaa.R
 \name{mrgsolvetk}
 \alias{mrgsolvetk}
-\title{mrgsolve simulation tool kit.}
+\title{mrgsolve simulation tool kit}
 \description{
-mrgsolve simulation tool kit.
+mrgsolve simulation tool kit
 }
+\section{Sensitivity Analysis}{
+
+
+\code{\link{sens_unif}} Simulate from uniform parameter distributions located
+around nominal parameter values
+
+\code{\link{sens_norm}} Simulate from log-normal parameter distributions
+located around nominal parameter values
+
+\code{\link{sens_seq}} Simulate from each value entered for each 
+parameter
+
+\code{\link{sens_grid}} Simulate from all combinations of parameter values
+
+\code{\link{sens_spaced}} Simulate from evenly-spaced values between 
+a set of lower and upper parameter bounds
+
+\code{\link{sens_covset}} Simulate from a covset object using the 
+\code{dmutate} package
+}
+
