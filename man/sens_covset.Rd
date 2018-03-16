@@ -13,6 +13,9 @@ sens_covset(mod, covset, .n = 100, univariate = FALSE, ...)
 
 \item{.n}{the number of replicates to simulate}
 
+\item{univariate}{if \code{TRUE}, separate simulations are done for 
+each input parameter}
+
 \item{...}{passed to \code{mutate_random} and \code{mrgsim}}
 }
 \description{

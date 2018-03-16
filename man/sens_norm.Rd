@@ -18,6 +18,9 @@ parameters to simulate}
 
 \item{.n}{the number of replicates to simulate}
 
+\item{univariate}{if \code{TRUE}, separate simulations are done for 
+each input parameter}
+
 \item{...}{passed to \code{\link{sens_norm_idata}} and to mrgism}
 
 \item{.dots}{list of arguments to pass to \code{\link{sens_norm}}}

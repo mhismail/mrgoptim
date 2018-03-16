@@ -3,6 +3,8 @@
 ##' @param mod the model object
 ##' @param covset a covset object
 ##' @param .n the number of replicates to simulate
+##' @param univariate if \code{TRUE}, separate simulations are done for 
+##' each input parameter
 ##' @param ... passed to \code{mutate_random} and \code{mrgsim}
 ##' 
 ##' @seealso \code{\link{sens_unif}} \code{\link{sens_norm}} 

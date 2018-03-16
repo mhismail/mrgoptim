@@ -3,7 +3,7 @@
 \name{sens_unif}
 \alias{sens_unif}
 \alias{sens_unif_}
-\title{Sensitivity analysis with uniform distribtion.}
+\title{Sensitivity analysis with uniform distribtion}
 \usage{
 sens_unif(mod, pars = names(param(mod)), .n = 100, univariate = FALSE,
   ...)
@@ -13,22 +13,28 @@ sens_unif_(mod, .dots)
 \arguments{
 \item{mod}{the model object}
 
-\item{pars}{character vector or comma-separated string of 
+\item{pars}{character vector or comma-separated string of}
+
+\item{.n}{the number of replicates to simulate
 model parameters to simulate}
 
-\item{.n}{the number of replicates to simulate}
+\item{univariate}{if \code{TRUE}, separate simulations are done for 
+each input parameter}
 
 \item{...}{passed to \code{\link{sens_norm_idata}} and to mrgism}
 
 \item{.dots}{list of arguments to pass to \code{\link{sens_unif}}}
 }
 \description{
-Sensitivity analysis with uniform distribtion.
+Sensitivity analysis with uniform distribtion
 }
 \details{
 See the \code{spread} argument to \code{\link{sens_unif_idata}}.
 }
 \examples{
+
+library(dplyr)
+
 mod <- mrgsolve:::house() \%>\% ev(amt = 100)
 
 out <- mod \%>\% select(CL,VC) \%>\% sens_unif(.n=10)

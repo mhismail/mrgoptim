@@ -22,6 +22,7 @@ select.mrgmod <- function(.data, ...) {
 select_par <- function(.data, ...) {
   select.mrgmod(.data, ...)
 }
+
 ##' @rdname select_mrgmod
 ##' @export
 select_runs <- function(.data, ...) {

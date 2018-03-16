@@ -4,6 +4,8 @@
 ##' @param .n the number of replicates to simulate
 ##' @param pars character vector or comma-separated string of model
 ##' parameters to simulate
+##' @param univariate if \code{TRUE}, separate simulations are done for 
+##' each input parameter
 ##' @param ... passed to \code{\link{sens_norm_idata}} and to mrgism
 ##' 
 ##' @seealso \code{\link{sens_norm_idata}} \code{\link{sens_covset}}

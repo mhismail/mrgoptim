@@ -20,7 +20,7 @@ parameter
 
 \code{\link{sens_grid}} Simulate from all combinations of parameter values
 
-\code{\link{sens_spaced}} Simulate from evenly-spaced values between 
+\code{\link{sens_range}} Simulate from evenly-spaced values between 
 a set of lower and upper parameter bounds
 
 \code{\link{sens_covset}} Simulate from a covset object using the 

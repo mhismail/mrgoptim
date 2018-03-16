@@ -144,6 +144,7 @@ na2zero <- function(x) {
 strip_args <- function(x) {
   x@args$data <- NULL
   x@args$idata <- NULL
+  valid_sens_ev(x@args$events)
   x
 }
 
@@ -157,6 +158,21 @@ col_sep <- function(x, target = names(x), all = "ID") {
   }
   out
 }
+
+valid_sens_ev <- function(x) {
+  if(is.null(x)) return(invisible(x))
+  x <- as.data.frame(x)
+  if(exists("ID", x)) {
+    nid <- length(unique(x[["ID"]]))
+    if(length(nid) > 1) {
+      stop("Invalid event object; more than one ID found", 
+           call. = FALSE)
+    }
+  }
+  return(invisible(x))
+}
+
+
 #
 # eval_ENV_block <- function(x,where,envir=new.env(),...) {
 #   .x <- try(eval(parse(text=x),envir=envir))

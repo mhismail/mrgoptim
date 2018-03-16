@@ -1,15 +1,20 @@
-##' Sensitivity analysis with uniform distribtion.
+##' Sensitivity analysis with uniform distribtion
 ##' 
 ##' @param mod the model object
-##' @param .n the number of replicates to simulate
 ##' @param pars character vector or comma-separated string of 
+##' @param .n the number of replicates to simulate
 ##' model parameters to simulate
+##' @param univariate if \code{TRUE}, separate simulations are done for 
+##' each input parameter
 ##' @param ... passed to \code{\link{sens_norm_idata}} and to mrgism
 ##' 
 ##' @details
 ##' See the \code{spread} argument to \code{\link{sens_unif_idata}}. 
 ##' 
 ##' @examples
+##' 
+##' library(dplyr)
+##' 
 ##' mod <- mrgsolve:::house() %>% ev(amt = 100)
 ##' 
 ##' out <- mod %>% select(CL,VC) %>% sens_unif(.n=10)

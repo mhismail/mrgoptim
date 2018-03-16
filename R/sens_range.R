@@ -7,17 +7,24 @@
 ##' @param ... named numeric vectors of length 2, specifying the minimum
 ##' and maximum value for that parameter
 ##' @param .n number of evenly spaced parameter values to simulate
+##' @param .factor used to create a range for sensitivity analysis
+##' based on the value of the selected parameters; the upper end 
+##' of the range is \code{.factor} times the parameter value and the 
+##' lower end of the range is the parameter value divided 
+##' by \code{.factor}
+##' @param pars a character vector of parameter names on which 
+##' to do sensitivity analysis
 ##'
 ##' @examples
 ##' mod <- mrgsolve:::house() %>% ev(amt = 100)
 ##' 
 ##' mod %>%
-##'   sens_spaced(CL = c(0.5,1.5), VC = c(20,30), .n = 5)
+##'   sens_range(CL = c(0.5,1.5), VC = c(20,30), .n = 5)
 ##'
 ##' @export 
-sens_spaced <- function(mod, ...,  .n = 5, .factor = NULL) {
+sens_range <- function(mod, ...,  .n = 5, .factor = NULL) {
   if(is.numeric(.factor)) {
-    return(sens_spaced_factor(mod = mod, ..., .n = .n, .factor = .factor))  
+    return(sens_range_factor(mod = mod, ..., .n = .n, .factor = .factor))  
   }
   x <- list(...)  
   data <- imap(x, .f = function(.x,.y) {
@@ -28,9 +35,9 @@ sens_spaced <- function(mod, ...,  .n = 5, .factor = NULL) {
   sens_univariate(mod, data, ...)
 }
 
-##' @rdname sens_spaced
+##' @rdname sens_range
 ##' @export
-sens_spaced_factor <- function(mod, ..., pars = names(param(mod)),
+sens_range_factor <- function(mod, ..., pars = names(param(mod)),
                                .n = 5, .factor = 2) {
   if(length(.factor)==1) {
     .factor <- c(1/.factor, .factor)  
@@ -49,7 +56,7 @@ sens_spaced_factor <- function(mod, ..., pars = names(param(mod)),
   pars$mod <- mod
   pars$.n <- .n
   pars$.factor <- NULL
-  do.call(sens_spaced, pars)
+  do.call(sens_range, pars)
 }
 
 

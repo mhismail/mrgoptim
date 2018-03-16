@@ -85,14 +85,14 @@ mod %>% sens_seq(CL = seq(2,12,2), VC = seq(30,100,10))
 ```
 
 
-### `sens_spaced`
+### `sens_range`
 
 - Create sets of parameters equally-spaced between two bounds
 
 ```{r}
 mod %>%
   select(CL,VC) %>%
-  sens_spaced(.n = 5, .factor = 4)
+  sens_range(.n = 5, .factor = 4)
 ```
 
 or
@@ -100,7 +100,7 @@ or
 ```{r}
 out <- 
   mod %>%
-  sens_spaced(CL = c(0.5, 1.5), VC = c(10,40), .n = 5)
+  sens_range(CL = c(0.5, 1.5), VC = c(10,40), .n = 5)
 
 ggplot(out, aes(time,CP, group = ID)) + geom_line() + facet_wrap(~name)
 ```
