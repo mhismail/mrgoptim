@@ -23,6 +23,7 @@
 ##'
 ##' @export 
 sens_range <- function(mod, ...,  .n = 5, .factor = NULL) {
+  assert_that(.n > 0)
   if(is.numeric(.factor)) {
     return(sens_range_factor(mod = mod, ..., .n = .n, .factor = .factor))  
   }
