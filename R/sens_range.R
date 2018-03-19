@@ -24,12 +24,12 @@
 ##' @export 
 sens_range <- function(mod, ...,  .n = 5, .factor = NULL) {
   assert_that(.n > 0)
+  x <- list(...)
   if(is.numeric(.factor)) {
     return(sens_range_factor(mod = mod, ..., .n = .n, .factor = .factor))  
   }
-  x <- list(...)  
   data <- imap(x, .f = function(.x,.y) {
-    stopifnot(length(.x)==2)
+    assert_that(length(.x)==2)
     ans <- data_frame(ID = 1, value = seq(.x[1], .x[2], length.out = .n))
     set_names(ans, c("ID", .y))
   })

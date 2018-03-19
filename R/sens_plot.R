@@ -2,11 +2,12 @@
 ##' Plot sensitivity analysis results
 ##' 
 ##' @param data data frame of sensitivity analysis results
-##' @param ycol name of the output variable to plot
-##' @param xcol name of independent variable
+##' @param y name of the output variable to plot
+##' @param x name of independent variable
 ##' @param col logical; if \code{TRUE} lines are colored by parameter value
 ##' @param log logical; if \code{TRUE}, y-axis is log-transformed
-##' @param split logical; if \code{TRUE}, the data set is split on the 
+##' @param split logical; if \code{TRUE}, the data set is split on the
+##' @param lwd passed to \code{geom_line} 
 ##' parameter name and a list of plots are returned; a single faceted plot is 
 ##' is returned otherwise
 ##' 
@@ -45,7 +46,7 @@ sens_plot <- function(data, y, x = "time", col = split,
           ggplot2::aes_string(x,y,group="ID",col="sens_value"),lwd = lwd
         )  
       if(nlev > 8 & nlev <= 16) {
-        p <- p + ggplot2::guides(color=guide_legend(ncol=6))
+        p <- p + ggplot2::guides(color=ggplot2::guide_legend(ncol=6))
       }
     } else {
       p <- p + 
@@ -54,7 +55,7 @@ sens_plot <- function(data, y, x = "time", col = split,
         )  
     }
     
-    p <- p + ggplot2::facet_wrap(~name) + labs(color = "")
+    p <- p + ggplot2::facet_wrap(~name) + ggplot2::labs(color = "")
     
     p + ggplot2::theme_bw() + ggplot2::theme(legend.position = "top")
     

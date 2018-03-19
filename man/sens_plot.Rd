@@ -10,17 +10,19 @@ sens_plot(data, y, x = "time", col = split, log = FALSE, split = FALSE,
 \arguments{
 \item{data}{data frame of sensitivity analysis results}
 
+\item{y}{name of the output variable to plot}
+
+\item{x}{name of independent variable}
+
 \item{col}{logical; if \code{TRUE} lines are colored by parameter value}
 
 \item{log}{logical; if \code{TRUE}, y-axis is log-transformed}
 
-\item{split}{logical; if \code{TRUE}, the data set is split on the 
+\item{split}{logical; if \code{TRUE}, the data set is split on the}
+
+\item{lwd}{passed to \code{geom_line} 
 parameter name and a list of plots are returned; a single faceted plot is 
 is returned otherwise}
-
-\item{ycol}{name of the output variable to plot}
-
-\item{xcol}{name of independent variable}
 }
 \description{
 Plot sensitivity analysis results

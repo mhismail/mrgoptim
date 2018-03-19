@@ -46,22 +46,18 @@ out <-
 
 out
 
-ggplot(out, aes(time, CP, group = ID, col = VC)) + geom_line()
+sens_plot(out, CP)
 ```
 
 
 We can also make a univariate version of this
 
 ```{r}
-out <- 
-  mod %>% 
+
+mod %>% 
   select(CL,VC,KA1) %>%
-  sens_unif(.n=10, lower=0.2, upper=3, univariate = TRUE)
-
-out
-
-ggplot(out, aes(time, CP, group = ID)) + 
-  geom_line() + facet_wrap(~name)
+  sens_unif(.n=10, lower=0.2, upper=3, univariate = TRUE) %>%
+  sens_plot(CP, split = TRUE)
 ```
 
 
@@ -73,7 +69,8 @@ values and `%CV`
 ```{r}
 mod %>% 
   select(CL,VC) %>%
-  sens_norm(.n=10, cv=30)
+  sens_norm(.n=10, cv=30) %>%
+  sens_plot(CP)
 ```
 
 ### `sens_seq`
@@ -81,7 +78,7 @@ mod %>%
 - Give a sequence for one or more parameters
 
 ```{r}
-mod %>% sens_seq(CL = seq(2,12,2), VC = seq(30,100,10))
+mod %>% sens_seq(CL = seq(2,12,2), VC = seq(30,100,10)) %>% sens_plot(CP)
 ```
 
 
@@ -92,17 +89,17 @@ mod %>% sens_seq(CL = seq(2,12,2), VC = seq(30,100,10))
 ```{r}
 mod %>%
   select(CL,VC) %>%
-  sens_range(.n = 5, .factor = 4)
+  sens_range(.n = 5, .factor = 4) %>%
+  sens_plot(CP, split = TRUE)
 ```
 
 or
 
 ```{r}
-out <- 
-  mod %>%
-  sens_range(CL = c(0.5, 1.5), VC = c(10,40), .n = 5)
 
-ggplot(out, aes(time,CP, group = ID)) + geom_line() + facet_wrap(~name)
+mod %>%
+  sens_range(CL = c(0.5, 1.5), VC = c(10,40), .n = 5) %>%
+  sens_plot(CP)
 ```
 
 
@@ -112,7 +109,7 @@ ggplot(out, aes(time,CP, group = ID)) + geom_line() + facet_wrap(~name)
 - Like `sens_seq` but performs all combinations
 
 ```{r}
-mod %>%  sens_grid(CL = seq(1,10,1), VC = seq(20,40,5))
+mod %>%  sens_grid(CL = seq(1,10,1), VC = seq(20,40,5)) %>% sens_plot(CP)
 ```
 
 ### `sens_covset`
@@ -133,6 +130,7 @@ out <- mod %>% sens_covset(cov1)
 out
 
 distinct(out,ID,CL,VC)
+
 ```
 
 
