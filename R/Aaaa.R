@@ -8,13 +8,13 @@
 ##' @importFrom mrgsolve mrgsim is.mrgmod ev as.ev obsonly simargs
 ##' @importFrom purrr imap pmap map map_df map_chr
 ##' @importFrom assertthat assert_that
-##' @importFrom rlang set_names quos set_names
+##' @importFrom rlang set_names quos set_names enexpr
 ##' @importFrom magrittr %>%
-##' @importMethodsFrom mrgsolve as.data.frame param as.numeric init
+##' @importMethodsFrom mrgsolve as.data.frame param as.numeric init as.list
 ##' 
-##' @importFrom optimhelp graft require_par is.parset
-##' @importClassesFrom optimhelp parset 
-##' @importMethodsFrom optimhelp initials as.list
+# @importFrom optimhelp graft require_par is.parset
+# @importClassesFrom optimhelp parset 
+# @importMethodsFrom optimhelp initials as.list
 ##' 
 NULL
 

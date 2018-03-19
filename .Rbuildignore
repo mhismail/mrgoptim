@@ -3,6 +3,7 @@ cran-comments.md
 Rchecks
 .github
 inst/doc
+inst/archive
 Doxyfile
 doxydoc
 ^.*\.Rproj$

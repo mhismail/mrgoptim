@@ -47,16 +47,16 @@ out
     . # A tibble: 1,930 x 8
     .       ID  time    CP    CL    VC   KA1 name         value
     .    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <chr>        <dbl>
-    .  1    1. 0.     0.    1.17  20.5  1.42 multivariate    1.
-    .  2    1. 0.250  1.45  1.17  20.5  1.42 multivariate    1.
-    .  3    1. 0.500  2.44  1.17  20.5  1.42 multivariate    1.
-    .  4    1. 0.750  3.12  1.17  20.5  1.42 multivariate    1.
-    .  5    1. 1.00   3.57  1.17  20.5  1.42 multivariate    1.
-    .  6    1. 1.25   3.87  1.17  20.5  1.42 multivariate    1.
-    .  7    1. 1.50   4.06  1.17  20.5  1.42 multivariate    1.
-    .  8    1. 1.75   4.18  1.17  20.5  1.42 multivariate    1.
-    .  9    1. 2.00   4.24  1.17  20.5  1.42 multivariate    1.
-    . 10    1. 2.25   4.26  1.17  20.5  1.42 multivariate    1.
+    .  1    1. 0.    0.     1.60  45.1  1.15 multivariate    1.
+    .  2    1. 0.250 0.553  1.60  45.1  1.15 multivariate    1.
+    .  3    1. 0.500 0.963  1.60  45.1  1.15 multivariate    1.
+    .  4    1. 0.750 1.26   1.60  45.1  1.15 multivariate    1.
+    .  5    1. 1.00  1.49   1.60  45.1  1.15 multivariate    1.
+    .  6    1. 1.25  1.65   1.60  45.1  1.15 multivariate    1.
+    .  7    1. 1.50  1.76   1.60  45.1  1.15 multivariate    1.
+    .  8    1. 1.75  1.85   1.60  45.1  1.15 multivariate    1.
+    .  9    1. 2.00  1.90   1.60  45.1  1.15 multivariate    1.
+    . 10    1. 2.25  1.94   1.60  45.1  1.15 multivariate    1.
     . # ... with 1,920 more rows
 
 ``` r
@@ -79,16 +79,16 @@ out
     . # A tibble: 5,790 x 5
     .       ID  time    CP name  value
     .    <dbl> <dbl> <dbl> <chr> <dbl>
-    .  1    1. 0.     0.   CL     2.94
-    .  2    1. 0.250  1.09 CL     2.94
-    .  3    1. 0.500  1.89 CL     2.94
-    .  4    1. 0.750  2.48 CL     2.94
-    .  5    1. 1.00   2.90 CL     2.94
-    .  6    1. 1.25   3.20 CL     2.94
-    .  7    1. 1.50   3.39 CL     2.94
-    .  8    1. 1.75   3.51 CL     2.94
-    .  9    1. 2.00   3.58 CL     2.94
-    . 10    1. 2.25   3.59 CL     2.94
+    .  1    1. 0.     0.   CL     2.52
+    .  2    1. 0.250  1.09 CL     2.52
+    .  3    1. 0.500  1.90 CL     2.52
+    .  4    1. 0.750  2.50 CL     2.52
+    .  5    1. 1.00   2.94 CL     2.52
+    .  6    1. 1.25   3.25 CL     2.52
+    .  7    1. 1.50   3.46 CL     2.52
+    .  8    1. 1.75   3.59 CL     2.52
+    .  9    1. 2.00   3.67 CL     2.52
+    . 10    1. 2.25   3.71 CL     2.52
     . # ... with 5,780 more rows
 
 ``` r
@@ -111,16 +111,16 @@ mod %>%
     . # A tibble: 1,930 x 7
     .       ID  time    CP    CL    VC name         value
     .    <dbl> <dbl> <dbl> <dbl> <dbl> <chr>        <dbl>
-    .  1    1. 0.     0.    1.64  20.5 multivariate    1.
-    .  2    1. 0.250  1.07  1.64  20.5 multivariate    1.
-    .  3    1. 0.500  1.87  1.64  20.5 multivariate    1.
-    .  4    1. 0.750  2.48  1.64  20.5 multivariate    1.
-    .  5    1. 1.00   2.94  1.64  20.5 multivariate    1.
-    .  6    1. 1.25   3.27  1.64  20.5 multivariate    1.
-    .  7    1. 1.50   3.51  1.64  20.5 multivariate    1.
-    .  8    1. 1.75   3.68  1.64  20.5 multivariate    1.
-    .  9    1. 2.00   3.79  1.64  20.5 multivariate    1.
-    . 10    1. 2.25   3.86  1.64  20.5 multivariate    1.
+    .  1    1. 0.    0.     1.16  34.5 multivariate    1.
+    .  2    1. 0.250 0.639  1.16  34.5 multivariate    1.
+    .  3    1. 0.500 1.13   1.16  34.5 multivariate    1.
+    .  4    1. 0.750 1.51   1.16  34.5 multivariate    1.
+    .  5    1. 1.00  1.80   1.16  34.5 multivariate    1.
+    .  6    1. 1.25  2.02   1.16  34.5 multivariate    1.
+    .  7    1. 1.50  2.19   1.16  34.5 multivariate    1.
+    .  8    1. 1.75  2.31   1.16  34.5 multivariate    1.
+    .  9    1. 2.00  2.40   1.16  34.5 multivariate    1.
+    . 10    1. 2.25  2.47   1.16  34.5 multivariate    1.
     . # ... with 1,920 more rows
 
 ### `sens_seq`
@@ -231,16 +231,16 @@ out
     . # A tibble: 19,300 x 7
     .       ID  time    CP    CL    VC name         value
     .    <dbl> <dbl> <dbl> <dbl> <dbl> <chr>        <dbl>
-    .  1    1. 0.    0.     1.77  46.3 multivariate    1.
-    .  2    1. 0.250 0.475  1.77  46.3 multivariate    1.
-    .  3    1. 0.500 0.841  1.77  46.3 multivariate    1.
-    .  4    1. 0.750 1.12   1.77  46.3 multivariate    1.
-    .  5    1. 1.00  1.34   1.77  46.3 multivariate    1.
-    .  6    1. 1.25  1.50   1.77  46.3 multivariate    1.
-    .  7    1. 1.50  1.62   1.77  46.3 multivariate    1.
-    .  8    1. 1.75  1.71   1.77  46.3 multivariate    1.
-    .  9    1. 2.00  1.78   1.77  46.3 multivariate    1.
-    . 10    1. 2.25  1.82   1.77  46.3 multivariate    1.
+    .  1    1. 0.    0.     2.37  46.1 multivariate    1.
+    .  2    1. 0.250 0.477  2.37  46.1 multivariate    1.
+    .  3    1. 0.500 0.842  2.37  46.1 multivariate    1.
+    .  4    1. 0.750 1.12   2.37  46.1 multivariate    1.
+    .  5    1. 1.00  1.33   2.37  46.1 multivariate    1.
+    .  6    1. 1.25  1.49   2.37  46.1 multivariate    1.
+    .  7    1. 1.50  1.61   2.37  46.1 multivariate    1.
+    .  8    1. 1.75  1.69   2.37  46.1 multivariate    1.
+    .  9    1. 2.00  1.76   2.37  46.1 multivariate    1.
+    . 10    1. 2.25  1.80   2.37  46.1 multivariate    1.
     . # ... with 19,290 more rows
 
 ``` r
@@ -250,133 +250,16 @@ distinct(out,ID,CL,VC)
     . # A tibble: 100 x 3
     .       ID    CL    VC
     .    <dbl> <dbl> <dbl>
-    .  1    1.  1.77  46.3
-    .  2    2.  1.54  66.4
-    .  3    3.  3.18  69.1
-    .  4    4.  1.35  68.8
-    .  5    5.  3.03  81.1
-    .  6    6.  1.39  66.5
-    .  7    7.  1.41  19.9
-    .  8    8.  3.16 126. 
-    .  9    9.  1.94  21.9
-    . 10   10.  2.80  15.1
+    .  1    1.  2.37 46.1 
+    .  2    2.  2.95 32.5 
+    .  3    3.  2.84 29.8 
+    .  4    4.  3.22 80.9 
+    .  5    5.  2.99 35.3 
+    .  6    6.  1.89 54.3 
+    .  7    7.  2.48  4.35
+    .  8    8.  1.16 42.1 
+    .  9    9.  2.13 47.9 
+    . 10   10.  3.34 78.9 
     . # ... with 90 more rows
 
-Estimation `stats::optim`
-=========================
-
-Load a data set
----------------
-
-``` r
-data(exTheoph)
-df <- mutate(exTheoph, DV = conc)
-```
-
-Load a model
-------------
-
-``` r
-mod <- mread("pk1cmt", modlib())
-```
-
-Define an objective function
-----------------------------
-
--   This could be anything
-
-``` r
-ofv <- function(dv,pred,par) -1*sum(dnorm(dv,pred,par$sigma,log=TRUE))
-```
-
-Define parameters to estimate
------------------------------
-
-``` r
-library(optimhelp)
-par <- parset(log_par("CL", 0.1),
-              log_par("VC", 1.1),
-              log_par("KA1",1.1),
-              log_par("sigma",1))
-```
-
-Fit
----
-
--   The workflow is the same as when we simulate
--   Get the model ready
--   Define the dta set
--   Pipe to `fit_optim` rather than `mrgsim`
--   Here, just fit `ID==3`
-
-``` r
-fit <- 
-  mod %>% 
-  data_set(df, ID==3) %>%
-  fit_optim(pred="CP",ofv=ofv,par=par)
-```
-
-``` r
-fit$pars
-```
-
-    .   name     value transf tr fx
-    .     CL 0.0395583    log  u   
-    .     VC 0.4858379    log  u   
-    .    KA1 2.4536472    log  u   
-    .  sigma 0.2089564    log  u
-
-Plot
-----
-
-``` r
-library(ggplot2)
-ggplot(data=fit$tab) + 
-  geom_point(aes(time,conc)) +
-  geom_line(aes(time,PRED)) 
-```
-
-![](inst/maintenance/img/README-unnamed-chunk-19-1.png)
-
-With fixed parameter
---------------------
-
-``` r
-library(optimhelp)
-par <- parset(log_par("CL", 0.1),
-              log_par("VC", 1.1),
-              log_par("KA1",1.9,fixed=TRUE),
-              log_par("sigma",1))
-```
-
-Fit
----
-
-``` r
-fitt <- 
-  mod %>% 
-  data_set(df, ID==3) %>%
-  fit_optim(pred="CP",ofv=ofv,par=par)
-```
-
-``` r
-fitt$pars
-```
-
-    .   name      value transf tr fx
-    .     CL 0.04190059    log  u   
-    .     VC 0.45512514    log  u   
-    .    KA1 1.90000000    log  u  *
-    .  sigma 0.35140850    log  u
-
-``` r
-fit$value
-```
-
-    . [1] -1.470963
-
-``` r
-fitt$value
-```
-
-    . [1] 3.732531
+\`

@@ -10,9 +10,6 @@
 ##' 
 ##' @seealso \code{\link{sens_norm_idata}} \code{\link{sens_covset}}
 ##' 
-##' 
-##' 
-##' 
 ##' @export
 sens_norm <- function(mod, pars=names(param(mod)), .n = 100, 
                       univariate = FALSE, ...) {

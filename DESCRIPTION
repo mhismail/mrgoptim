@@ -19,7 +19,6 @@ Depends:
 Imports:
   dplyr (>= 0.7.4),
   tibble,
-  optimhelp,
   tidyr, 
   purrr,
   assertthat, 
@@ -27,10 +26,7 @@ Imports:
   magrittr
 Suggests:
   dmutate,
-  minqa,
   testthat, 
-  MASS
-Remotes:
-  github::kylebaron/optimhelp,
-  github::metrumresearchgroup/mrgsolve
+  MASS, 
+  ggplot2
 RoxygenNote: 6.0.1
