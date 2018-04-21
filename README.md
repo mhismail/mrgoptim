@@ -64,16 +64,16 @@ out
     . # A tibble: 1,930 x 8
     .       ID  time    CP    CL    VC   KA1 name         value
     .    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <chr>        <dbl>
-    .  1    1. 0.    0.     1.51  37.0  1.75 multivariate    1.
-    .  2    1. 0.250 0.952  1.51  37.0  1.75 multivariate    1.
-    .  3    1. 0.500 1.56   1.51  37.0  1.75 multivariate    1.
-    .  4    1. 0.750 1.94   1.51  37.0  1.75 multivariate    1.
-    .  5    1. 1.00  2.18   1.51  37.0  1.75 multivariate    1.
-    .  6    1. 1.25  2.32   1.51  37.0  1.75 multivariate    1.
-    .  7    1. 1.50  2.40   1.51  37.0  1.75 multivariate    1.
-    .  8    1. 1.75  2.45   1.51  37.0  1.75 multivariate    1.
-    .  9    1. 2.00  2.47   1.51  37.0  1.75 multivariate    1.
-    . 10    1. 2.25  2.47   1.51  37.0  1.75 multivariate    1.
+    .  1    1. 0.    0.     2.22  54.9  2.52 multivariate    1.
+    .  2    1. 0.250 0.846  2.22  54.9  2.52 multivariate    1.
+    .  3    1. 0.500 1.29   2.22  54.9  2.52 multivariate    1.
+    .  4    1. 0.750 1.52   2.22  54.9  2.52 multivariate    1.
+    .  5    1. 1.00  1.63   2.22  54.9  2.52 multivariate    1.
+    .  6    1. 1.25  1.68   2.22  54.9  2.52 multivariate    1.
+    .  7    1. 1.50  1.70   2.22  54.9  2.52 multivariate    1.
+    .  8    1. 1.75  1.70   2.22  54.9  2.52 multivariate    1.
+    .  9    1. 2.00  1.69   2.22  54.9  2.52 multivariate    1.
+    . 10    1. 2.25  1.68   2.22  54.9  2.52 multivariate    1.
     . # ... with 1,920 more rows
 
 ``` r
@@ -193,16 +193,16 @@ out
     . # A tibble: 19,300 x 7
     .       ID  time    CP    CL    VC name         value
     .    <dbl> <dbl> <dbl> <dbl> <dbl> <chr>        <dbl>
-    .  1    1. 0.    0.     2.75  43.8 multivariate    1.
-    .  2    1. 0.250 0.501  2.75  43.8 multivariate    1.
-    .  3    1. 0.500 0.883  2.75  43.8 multivariate    1.
-    .  4    1. 0.750 1.17   2.75  43.8 multivariate    1.
-    .  5    1. 1.00  1.39   2.75  43.8 multivariate    1.
-    .  6    1. 1.25  1.55   2.75  43.8 multivariate    1.
-    .  7    1. 1.50  1.67   2.75  43.8 multivariate    1.
-    .  8    1. 1.75  1.76   2.75  43.8 multivariate    1.
-    .  9    1. 2.00  1.82   2.75  43.8 multivariate    1.
-    . 10    1. 2.25  1.86   2.75  43.8 multivariate    1.
+    .  1    1. 0.    0.     2.24  36.7 multivariate    1.
+    .  2    1. 0.250 0.599  2.24  36.7 multivariate    1.
+    .  3    1. 0.500 1.06   2.24  36.7 multivariate    1.
+    .  4    1. 0.750 1.40   2.24  36.7 multivariate    1.
+    .  5    1. 1.00  1.66   2.24  36.7 multivariate    1.
+    .  6    1. 1.25  1.86   2.24  36.7 multivariate    1.
+    .  7    1. 1.50  2.00   2.24  36.7 multivariate    1.
+    .  8    1. 1.75  2.11   2.24  36.7 multivariate    1.
+    .  9    1. 2.00  2.18   2.24  36.7 multivariate    1.
+    . 10    1. 2.25  2.23   2.24  36.7 multivariate    1.
     . # ... with 19,290 more rows
 
 ``` r
@@ -212,16 +212,16 @@ distinct(out,ID,CL,VC)
     . # A tibble: 100 x 3
     .       ID    CL    VC
     .    <dbl> <dbl> <dbl>
-    .  1    1.  2.75  43.8
-    .  2    2.  3.45  53.0
-    .  3    3.  2.24  78.7
-    .  4    4.  1.70  72.7
-    .  5    5.  1.50  84.7
-    .  6    6.  3.26 111. 
-    .  7    7.  1.55  68.7
-    .  8    8.  1.08  63.3
-    .  9    9.  2.98  37.3
-    . 10   10.  1.46  11.7
+    .  1    1.  2.24  36.7
+    .  2    2.  2.70  45.7
+    .  3    3.  3.02  21.7
+    .  4    4.  3.08  51.9
+    .  5    5.  1.51  32.8
+    .  6    6.  2.43  13.6
+    .  7    7.  2.28  35.3
+    .  8    8.  1.72  52.1
+    .  9    9.  2.02  62.4
+    . 10   10.  2.15  31.9
     . # ... with 90 more rows
 
 Maximum Likelihood Parameter Optimization
