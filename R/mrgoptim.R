@@ -8,7 +8,6 @@ ML_obj_fun <- function(raw,pred,var) {
 get_preds <- function (mod, params) {
   out <- mod %>%
     param(params) %>%
-    zero.re() %>%
     carry.out(dv, cmt) %>%
     obsonly() %>%
     mrgsim(end = -1) %>%
@@ -18,14 +17,14 @@ get_preds <- function (mod, params) {
 } 
 
 
-ML_optim <- function(params, mod, output, var, input) {
+ML_optim <- function(params, mod, input) {
   
   params <- 10 ^ params
   predicted <- get_preds(mod, params)
   
-  predicted <- reformat(predicted, input, output)
+  predicted <- reformat(predicted, input)
   
-  ML_obj_fun(predicted$dv, predicted[, 5], predicted[, 5 + length(output)])
+  ML_obj_fun(predicted$dv, predicted[, 5], predicted[, 5 + length(input)])
 }
 
 
@@ -41,7 +40,7 @@ h <- function (atol, rtol, param) {
 
 hj <- Vectorize(h, c("param"))
 
-get_matrices <- function(params, mod, output, var, input){
+get_matrices <- function(params, mod, input){
   mod_list <- as.list(mod)
   a <- unclass(simargs(mod)$data)
   a <- as.data.frame(a)
@@ -52,7 +51,7 @@ get_matrices <- function(params, mod, output, var, input){
 
   hja <- hj(unname(mod_list$solver["atol"]), unname(mod_list$solver["rtol"]), params)
 
-  for (i in 1:length(params)) {
+  for (i in seq_along(params)) {
     new_params1 <- params
     new_params2 <- params
     
@@ -60,13 +59,13 @@ get_matrices <- function(params, mod, output, var, input){
     new_params1[i] <- params[i] + hja[i]
     new_params2[i] <- params[i] - hja[i]
 
-    a1 <- reformat(get_preds(mod, new_params1), input, output)
-    a2 <- reformat(get_preds(mod, new_params2), input, output)
+    a1 <- reformat(get_preds(mod, new_params1), input)
+    a2 <- reformat(get_preds(mod, new_params2), input)
 
     dydthetai <- (a1[, 5] - a2[, 5]) / (2 * hja[i])
     dydtheta[, i] <- as.matrix(dydthetai)
     
-    dgdthetai <- (a1[, 5 + length(output)] - a2[, 5 + length(output)]) / (2 * hja[i])
+    dgdthetai <- (a1[, 5 + length(input)] - a2[, 5 + length(input)]) / (2 * hja[i])
     dgdtheta[, i] <- as.matrix(dgdthetai)
   }
   list(dydtheta, dgdtheta)
@@ -74,12 +73,16 @@ get_matrices <- function(params, mod, output, var, input){
 
 
 
-reformat<-function(predicted, input, output) {
-  for (i in 1:length(output)) {
-    predicted[, 5] <- ifelse(input[i] == predicted$cmt, predicted[, i + 4], predicted[, 5])
-    predicted[, 5 + length(output)] <- ifelse(input[i] == predicted$cmt,
-                                          predicted[, i + 4 + length(output)],
-                                          predicted[, 5 + length(output)])
+reformat<-function(predicted, input) {
+  for (i in seq_along(input)) {
+
+    predicted[, 5] <- ifelse(input[i] == predicted$cmt, 
+                             predicted[, i + 4], 
+                             predicted[, 5])
+    
+    predicted[, 5 + length(input)] <- ifelse(input[i] == predicted$cmt,
+                                          predicted[, i + 4 + length(input)],
+                                          predicted[, 5 + length(input)])
     
   }
   return(predicted)
@@ -110,8 +113,10 @@ mrgoptim <- function(mod,
                      v_prms,
                      cov = TRUE,
                      restarts = 0,
-                     method = "newuoa",
+                     method =  c("newuoa", "Nelder-Mead", "BFGS", "CG", "L-BFGS-B", "SANN", "Brent"),
                      options = list(maxit = 10000)) {
+  
+  method <- match.arg(method)
   
   mod_list <- as.list(mod)
   
@@ -159,6 +164,12 @@ mrgoptim <- function(mod,
          " in parameter list",call. = FALSE) 
   }
   
+  # Attach request to model object
+  mod@args$Request <- c(output, var)
+  
+  # Make sure random effects disabled
+  mod <- zero.re(mod)
+  
   #Get all parameters in mod object
   params <- mod_list$param
   
@@ -166,8 +177,7 @@ mrgoptim <- function(mod,
   params <- params[which(names(params) %in% c(prms,v_prms))] %>%
     unlist() %>% log10()
   
-  # Attach request to model object
-  mod@args$Request <- c(output, var)
+
   
   
   fit <-list()
@@ -185,8 +195,6 @@ mrgoptim <- function(mod,
               gr = NULL,
               method = method,
               mod,
-              output,
-              var,
               input,
               control = options)} else {
                 
@@ -195,8 +203,6 @@ mrgoptim <- function(mod,
               par = params,
               fn = ML_optim, 
               mod = mod,
-              output = output,
-              var = var,
               input = input)
               }
       
@@ -212,8 +218,6 @@ mrgoptim <- function(mod,
               gr = NULL,
               method = method,
               mod,
-              output,
-              var,
               input,
               control = options)} else {
                 
@@ -221,8 +225,6 @@ mrgoptim <- function(mod,
           par = fit[[i - 1]]$par,
           fn = ML_optim, 
           mod = mod,
-          output = output,
-          var = var,
           input = input)
               }
       
@@ -236,7 +238,7 @@ mrgoptim <- function(mod,
     params <- 10 ^ fit[[1 + restarts]]$par
     
     
-    mats<- get_matrices(params, mod, output, var, input)
+    mats<- get_matrices(params, mod, input)
     
     M <- matrix (0, nrow = length(params), ncol = length(params))
     
@@ -247,33 +249,31 @@ mrgoptim <- function(mod,
     dgdtheta.all <- mats[[2]]
     
     # n-length vector
-    variances <- reformat(get_preds(mod, params), input, output)[, 5 + length(output)]
+    variances <- reformat(get_preds(mod, params), input)[, 5 + length(input)]
     
     # which parameters are system parameters
     thetas <- which(names(params) %in% c(prms))
     
     # M is Fisher information matrix
-    M <- 1 / 2 * (t(dgdtheta.all/(c(variances ^ 2))) %*% (dgdtheta.all))
+    M <- 1 / 2 * crossprod(dgdtheta.all/variances ^ 2, dgdtheta.all)
     M[thetas, thetas] <- (M[thetas, thetas] + 
-                            t(dydtheta.all[, thetas] / c(variances)) %*% (dydtheta.all[, thetas]))
+                            crossprod(dydtheta.all[, thetas] / variances, dydtheta.all[, thetas])
     
     
-    cov <- tryCatch(solve(M), error = function(err) "Error")
+    cov <- tryCatch(solve(M), error = function(err) return(err))
+    fit[[1 + restarts]]$cov <- cov
     
     
     if (is.matrix(cov)) {
-      fit[[1 + restarts]]$cov <- cov
       fit[[1 + restarts]]$cor <- cov2cor(cov)
       fit[[1 + restarts]]$CVPercent <- sqrt(diag(cov)) / params * 100
-    }else {
-      fit[[1 + restarts]]$cov <- "Error in covariance step"
     }
   }
   
   fitted_data <- get_preds(mod, params)
   names(fitted_data)[c(5, 5 + length(output))] <- c("pred", "var")
   
-  fit[[1 + restarts]]$fitted_data <- reformat(fitted_data, input, output)[, c(1:5, 5 + length(output))]
+  fit[[1 + restarts]]$fitted_data <- reformat(fitted_data, input)[, c(1:5, 5 + length(input))]
   fit[[1 + restarts]]$par<-10 ^ fit[[1 + restarts]]$par
   
   return(unclass(fit[[1 + restarts]]))

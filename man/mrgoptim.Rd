@@ -6,7 +6,8 @@
 with newuoa or optim}
 \usage{
 mrgoptim(mod, input, output, var, prms, v_prms, cov = TRUE, restarts = 0,
-  method = "newuoa", options = list(maxit = 10000))
+  method = c("newuoa", "Nelder-Mead", "BFGS", "CG", "L-BFGS-B", "SANN",
+  "Brent"), options = list(maxit = 10000))
 }
 \arguments{
 \item{mod}{a model object}
