@@ -5,13 +5,13 @@ ML_obj_fun <- function(raw,pred,var) {
 }
 
 
-get_preds <- function (mod, params, Request) {
+get_preds <- function (mod, params) {
   out <- mod %>%
     param(params) %>%
     zero.re() %>%
     carry.out(dv, cmt) %>%
     obsonly() %>%
-    mrgsim(Request = Request, end = -1) %>%
+    mrgsim(end = -1) %>%
     as.data.frame()
 
   return(out)
@@ -19,10 +19,9 @@ get_preds <- function (mod, params, Request) {
 
 
 ML_optim <- function(params, mod, output, var, input) {
-  Request <- c(output, var)
   
   params <- 10 ^ params
-  predicted <- get_preds(mod, params, Request)
+  predicted <- get_preds(mod, params)
   
   predicted <- reformat(predicted, input, output)
   
@@ -52,8 +51,7 @@ get_matrices <- function(params, mod, output, var, input){
   dgdtheta <- matrix(0, nrow = length(a), ncol = length(params))
 
   hja <- hj(unname(mod_list$solver["atol"]), unname(mod_list$solver["rtol"]), params)
-  Request <- c(output, var)
-  
+
   for (i in 1:length(params)) {
     new_params1 <- params
     new_params2 <- params
@@ -62,8 +60,8 @@ get_matrices <- function(params, mod, output, var, input){
     new_params1[i] <- params[i] + hja[i]
     new_params2[i] <- params[i] - hja[i]
 
-    a1 <- reformat(get_preds(mod, new_params1, Request), input, output)
-    a2 <- reformat(get_preds(mod, new_params2, Request), input, output)
+    a1 <- reformat(get_preds(mod, new_params1), input, output)
+    a2 <- reformat(get_preds(mod, new_params2), input, output)
 
     dydthetai <- (a1[, 5] - a2[, 5]) / (2 * hja[i])
     dydtheta[, i] <- as.matrix(dydthetai)
@@ -168,6 +166,9 @@ mrgoptim <- function(mod,
   params <- params[which(names(params) %in% c(prms,v_prms))] %>%
     unlist() %>% log10()
   
+  # Attach request to model object
+  mod@args$Request <- c(output, var)
+  
   
   fit <-list()
   
@@ -246,7 +247,7 @@ mrgoptim <- function(mod,
     dgdtheta.all <- mats[[2]]
     
     # n-length vector
-    variances <- reformat(get_preds(mod, params, c(output,var)), input, output)[, 5 + length(output)]
+    variances <- reformat(get_preds(mod, params), input, output)[, 5 + length(output)]
     
     # which parameters are system parameters
     thetas <- which(names(params) %in% c(prms))
@@ -269,7 +270,7 @@ mrgoptim <- function(mod,
     }
   }
   
-  fitted_data <- get_preds(mod, params, c(output, var))
+  fitted_data <- get_preds(mod, params)
   names(fitted_data)[c(5, 5 + length(output))] <- c("pred", "var")
   
   fit[[1 + restarts]]$fitted_data <- reformat(fitted_data, input, output)[, c(1:5, 5 + length(output))]
