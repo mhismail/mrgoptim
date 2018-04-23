@@ -8,7 +8,6 @@ ML_obj_fun <- function(raw,pred,var) {
 get_preds <- function (mod, params) {
   out <- mod %>%
     param(params) %>%
-    carry.out(dv, cmt) %>%
     obsonly() %>%
     mrgsim(end = -1) %>%
     as.data.frame()
@@ -17,14 +16,12 @@ get_preds <- function (mod, params) {
 } 
 
 
-ML_optim <- function(params, mod, input) {
+ML_optim <- function(params, mod) {
   
   params <- 10 ^ params
   predicted <- get_preds(mod, params)
   
-  predicted <- reformat(predicted, input)
-  
-  ML_obj_fun(predicted$dv, predicted[, 5], predicted[, 5 + length(input)])
+  ML_obj_fun(predicted$dv, predicted[, 5], predicted[, 6])
 }
 
 
@@ -39,7 +36,7 @@ h <- function (atol, rtol, param) {
 }
 
 
-get_matrices <- function(params, mod, input){
+get_matrices <- function(params, mod){
   mod_list <- as.list(mod)
   a <- unclass(simargs(mod)$data)
   a <- as.data.frame(a)
@@ -49,8 +46,8 @@ get_matrices <- function(params, mod, input){
   dgdtheta <- matrix(0, nrow = length(a), ncol = length(params))
 
   hja <- vapply(params, 
-                function(params) h(unname(mod_list$solver["atol"]), 
-                                   unname(mod_list$solver["rtol"]), 
+                function(params) h(mod_list$solver["atol"], 
+                                   mod_list$solver["rtol"], 
                                    params), 
                 numeric(1))
 
@@ -63,13 +60,13 @@ get_matrices <- function(params, mod, input){
     new_params1[i] <- params[i] + hja[i]
     new_params2[i] <- params[i] - hja[i]
 
-    a1 <- reformat(get_preds(mod, new_params1), input)
-    a2 <- reformat(get_preds(mod, new_params2), input)
+    a1 <- get_preds(mod, new_params1)
+    a2 <- get_preds(mod, new_params2)
 
     dydthetai <- (a1[, 5] - a2[, 5]) / (2 * hja[i])
     dydtheta[, i] <- as.matrix(dydthetai)
     
-    dgdthetai <- (a1[, 5 + length(input)] - a2[, 5 + length(input)]) / (2 * hja[i])
+    dgdthetai <- (a1[, 6] - a2[, 6]) / (2 * hja[i])
     dgdtheta[, i] <- as.matrix(dgdthetai)
   }
   list(dydtheta, dgdtheta)
@@ -77,29 +74,12 @@ get_matrices <- function(params, mod, input){
 
 
 
-reformat<-function(predicted, input) {
-  for (i in seq_along(input)) {
-
-    predicted[, 5] <- ifelse(input[i] == predicted$cmt, 
-                             predicted[, i + 4], 
-                             predicted[, 5])
-    
-    predicted[, 5 + length(input)] <- ifelse(input[i] == predicted$cmt,
-                                          predicted[, i + 4 + length(input)],
-                                          predicted[, 5 + length(input)])
-    
-  }
-  return(predicted)
-}
-
-
 ##' Fit a model to data using maximum likelihood objective function
 ##' with newuoa or optim
 ##' 
 ##' @param mod a model object
-##' @param input a numeric vector containing observation compartments in data_set to be fit
-##' @param output a character vector containing names of pred output columns
-##' @param var a character vector containing names of variance output columns of preds
+##' @param output a character string containing name of prediction output column
+##' @param var a character vector containing name of variance output column of preditcions
 ##' @param prms a character vector of parameters to fit
 ##' @param v_prms a character vector of variance parameters to fit
 ##' @param cov logical, perform covariance step
@@ -110,9 +90,8 @@ reformat<-function(predicted, input) {
 ##' @rdname mrgoptim
 
 mrgoptim <- function(mod,
-                     input,
-                     output,
-                     var,
+                     output = "ipred",
+                     var = "var",
                      prms,
                      v_prms,
                      cov = TRUE,
@@ -124,13 +103,11 @@ mrgoptim <- function(mod,
   
   mod_list <- as.list(mod)
   
-  data <- as.data.frame(unclass(simargs(mod)$data))
-  
   if (!is.mrgmod(mod)) {
     stop("mod argument must be a model object", call. = FALSE) 
   }
   
-  if (is.null(dim(data))) {
+  if (is.null(simargs(mod)$data)) {
     stop("dataset not found", call. = FALSE) 
   }
   
@@ -144,16 +121,6 @@ mrgoptim <- function(mod,
     stop("couldn't find ",
          paste(output[which(!var %in% c(mod_list$cmt, mod_list$capture))], collapse=", "), 
          " in model output", call. = FALSE) 
-  }
-  
-  if (!all(input %in% data$cmt)) {
-    stop("couldn't find compartment/s ",
-         paste(input[which(!input %in% data$cmt)], collapse=", "), 
-         " in cmt column", call. = FALSE) 
-  }
-  
-  if (!(length(input) == length(output) & length(input) == length(var))){
-    stop("input, output, and var vectors should have same length", call. = FALSE)
   }
   
   if (!all(prms %in% names(mod_list$param))){
@@ -173,6 +140,7 @@ mrgoptim <- function(mod,
   
   # Make sure random effects disabled
   mod <- zero.re(mod)
+  mod <- carry.out(mod, dv, cmt)
   
   #Get all parameters in mod object
   params <- mod_list$param
@@ -199,15 +167,13 @@ mrgoptim <- function(mod,
               gr = NULL,
               method = method,
               mod,
-              input,
               control = options)} else {
                 
         # Fit with newuoa
         minqa::newuoa(
               par = params,
               fn = ML_optim, 
-              mod = mod,
-              input = input)
+              mod = mod)
               }
       
        # Optimization with newuoa strips names in output, add them back in
@@ -222,19 +188,19 @@ mrgoptim <- function(mod,
               gr = NULL,
               method = method,
               mod,
-              input,
               control = options)} else {
                 
         minqa::newuoa(
           par = fit[[i - 1]]$par,
           fn = ML_optim, 
-          mod = mod,
-          input = input)
+          mod = mod)
               }
       
       names(fit[[i]]$par) <- names(params)
     }
   }
+  
+  print(fit)
   
   # Covariance step
   if (cov) { 
@@ -242,7 +208,7 @@ mrgoptim <- function(mod,
     params <- 10 ^ fit[[1 + restarts]]$par
     
     
-    mats <- get_matrices(params, mod, input)
+    mats <- get_matrices(params, mod)
 
     # n x p matrix
     dydtheta.all <- mats[[1]]
@@ -251,7 +217,7 @@ mrgoptim <- function(mod,
     dgdtheta.all <- mats[[2]]
     
     # n-length vector
-    variances <- reformat(get_preds(mod, params), input)[, 5 + length(input)]
+    variances <- get_preds(mod, params)[, 6]
     
     # which parameters are system parameters
     thetas <- which(names(params) %in% c(prms))
@@ -273,10 +239,10 @@ mrgoptim <- function(mod,
   }
   
   fitted_data <- get_preds(mod, params)
-  names(fitted_data)[c(5, 5 + length(output))] <- c("pred", "var")
+  names(fitted_data)[c(5, 6)] <- c("pred", "var")
   
-  fit[[1 + restarts]]$fitted_data <- reformat(fitted_data, input)[, c(1:5, 5 + length(input))]
-  fit[[1 + restarts]]$par<-10 ^ fit[[1 + restarts]]$par
+  fit[[1 + restarts]]$fitted_data <- fitted_data
+  fit[[1 + restarts]]$par <- 10 ^ fit[[1 + restarts]]$par
   
   return(unclass(fit[[1 + restarts]]))
 } 

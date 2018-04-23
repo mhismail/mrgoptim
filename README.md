@@ -9,14 +9,7 @@ Installation
 
 ``` r
 library(devtools)
-install_github("mrgsolve/mrgsolvetk")
-```
-
-To install branch with `mrgoptim` function, until merged with mrgsolve/master:
-
-``` r
-library(devtools)
-install_github("mhismail/mrgsolvetk",ref="mrgoptim")
+install_github("mrgsolve/mrgsolvetk", ref = "mrgoptim")
 ```
 
 Examples
@@ -27,6 +20,7 @@ library(ggplot2)
 library(dplyr)
 library(mrgsolve)
 library(mrgsolvetk)
+source("R/mrgoptim.R")
 
 theme_set(theme_bw())
 
@@ -64,23 +58,23 @@ out
     . # A tibble: 1,930 x 8
     .       ID  time    CP    CL    VC   KA1 name         value
     .    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <chr>        <dbl>
-    .  1    1. 0.    0.     2.22  54.9  2.52 multivariate    1.
-    .  2    1. 0.250 0.846  2.22  54.9  2.52 multivariate    1.
-    .  3    1. 0.500 1.29   2.22  54.9  2.52 multivariate    1.
-    .  4    1. 0.750 1.52   2.22  54.9  2.52 multivariate    1.
-    .  5    1. 1.00  1.63   2.22  54.9  2.52 multivariate    1.
-    .  6    1. 1.25  1.68   2.22  54.9  2.52 multivariate    1.
-    .  7    1. 1.50  1.70   2.22  54.9  2.52 multivariate    1.
-    .  8    1. 1.75  1.70   2.22  54.9  2.52 multivariate    1.
-    .  9    1. 2.00  1.69   2.22  54.9  2.52 multivariate    1.
-    . 10    1. 2.25  1.68   2.22  54.9  2.52 multivariate    1.
+    .  1    1. 0.     0.    1.02  13.1  1.07 multivariate    1.
+    .  2    1. 0.250  1.77  1.02  13.1  1.07 multivariate    1.
+    .  3    1. 0.500  3.09  1.02  13.1  1.07 multivariate    1.
+    .  4    1. 0.750  4.07  1.02  13.1  1.07 multivariate    1.
+    .  5    1. 1.00   4.78  1.02  13.1  1.07 multivariate    1.
+    .  6    1. 1.25   5.30  1.02  13.1  1.07 multivariate    1.
+    .  7    1. 1.50   5.66  1.02  13.1  1.07 multivariate    1.
+    .  8    1. 1.75   5.91  1.02  13.1  1.07 multivariate    1.
+    .  9    1. 2.00   6.07  1.02  13.1  1.07 multivariate    1.
+    . 10    1. 2.25   6.16  1.02  13.1  1.07 multivariate    1.
     . # ... with 1,920 more rows
 
 ``` r
 sens_plot(out, CP)
 ```
 
-![](inst/maintenance/img/README-unnamed-chunk-5-1.png)
+![](inst/maintenance/img/README-unnamed-chunk-4-1.png)
 
 We can also make a univariate version of this
 
@@ -93,17 +87,17 @@ mod %>%
 
     . $CL
 
-![](inst/maintenance/img/README-unnamed-chunk-6-1.png)
+![](inst/maintenance/img/README-unnamed-chunk-5-1.png)
 
     . 
     . $KA1
 
-![](inst/maintenance/img/README-unnamed-chunk-6-2.png)
+![](inst/maintenance/img/README-unnamed-chunk-5-2.png)
 
     . 
     . $VC
 
-![](inst/maintenance/img/README-unnamed-chunk-6-3.png)
+![](inst/maintenance/img/README-unnamed-chunk-5-3.png)
 
 ### `sens_norm`
 
@@ -116,7 +110,7 @@ mod %>%
   sens_plot(CP)
 ```
 
-![](inst/maintenance/img/README-unnamed-chunk-7-1.png)
+![](inst/maintenance/img/README-unnamed-chunk-6-1.png)
 
 ### `sens_seq`
 
@@ -126,7 +120,7 @@ mod %>%
 mod %>% sens_seq(CL = seq(2,12,2), VC = seq(30,100,10)) %>% sens_plot(CP)
 ```
 
-![](inst/maintenance/img/README-unnamed-chunk-8-1.png)
+![](inst/maintenance/img/README-unnamed-chunk-7-1.png)
 
 ### `sens_range`
 
@@ -141,12 +135,12 @@ mod %>%
 
     . $CL
 
-![](inst/maintenance/img/README-unnamed-chunk-9-1.png)
+![](inst/maintenance/img/README-unnamed-chunk-8-1.png)
 
     . 
     . $VC
 
-![](inst/maintenance/img/README-unnamed-chunk-9-2.png)
+![](inst/maintenance/img/README-unnamed-chunk-8-2.png)
 
 or
 
@@ -156,7 +150,7 @@ mod %>%
   sens_plot(CP)
 ```
 
-![](inst/maintenance/img/README-unnamed-chunk-10-1.png)
+![](inst/maintenance/img/README-unnamed-chunk-9-1.png)
 
 ### `sens_grid`
 
@@ -166,7 +160,7 @@ mod %>%
 mod %>%  sens_grid(CL = seq(1,10,1), VC = seq(20,40,5)) %>% sens_plot(CP)
 ```
 
-![](inst/maintenance/img/README-unnamed-chunk-11-1.png)
+![](inst/maintenance/img/README-unnamed-chunk-10-1.png)
 
 ### `sens_covset`
 
@@ -193,16 +187,16 @@ out
     . # A tibble: 19,300 x 7
     .       ID  time    CP    CL    VC name         value
     .    <dbl> <dbl> <dbl> <dbl> <dbl> <chr>        <dbl>
-    .  1    1. 0.    0.     2.24  36.7 multivariate    1.
-    .  2    1. 0.250 0.599  2.24  36.7 multivariate    1.
-    .  3    1. 0.500 1.06   2.24  36.7 multivariate    1.
-    .  4    1. 0.750 1.40   2.24  36.7 multivariate    1.
-    .  5    1. 1.00  1.66   2.24  36.7 multivariate    1.
-    .  6    1. 1.25  1.86   2.24  36.7 multivariate    1.
-    .  7    1. 1.50  2.00   2.24  36.7 multivariate    1.
-    .  8    1. 1.75  2.11   2.24  36.7 multivariate    1.
-    .  9    1. 2.00  2.18   2.24  36.7 multivariate    1.
-    . 10    1. 2.25  2.23   2.24  36.7 multivariate    1.
+    .  1    1. 0.    0.     1.39  71.1 multivariate    1.
+    .  2    1. 0.250 0.310  1.39  71.1 multivariate    1.
+    .  3    1. 0.500 0.550  1.39  71.1 multivariate    1.
+    .  4    1. 0.750 0.736  1.39  71.1 multivariate    1.
+    .  5    1. 1.00  0.878  1.39  71.1 multivariate    1.
+    .  6    1. 1.25  0.988  1.39  71.1 multivariate    1.
+    .  7    1. 1.50  1.07   1.39  71.1 multivariate    1.
+    .  8    1. 1.75  1.14   1.39  71.1 multivariate    1.
+    .  9    1. 2.00  1.18   1.39  71.1 multivariate    1.
+    . 10    1. 2.25  1.22   1.39  71.1 multivariate    1.
     . # ... with 19,290 more rows
 
 ``` r
@@ -212,16 +206,16 @@ distinct(out,ID,CL,VC)
     . # A tibble: 100 x 3
     .       ID    CL    VC
     .    <dbl> <dbl> <dbl>
-    .  1    1.  2.24  36.7
-    .  2    2.  2.70  45.7
-    .  3    3.  3.02  21.7
-    .  4    4.  3.08  51.9
-    .  5    5.  1.51  32.8
-    .  6    6.  2.43  13.6
-    .  7    7.  2.28  35.3
-    .  8    8.  1.72  52.1
-    .  9    9.  2.02  62.4
-    . 10   10.  2.15  31.9
+    .  1    1.  1.39  71.1
+    .  2    2.  2.12  72.6
+    .  3    3.  1.19  63.8
+    .  4    4.  1.66  36.2
+    .  5    5.  3.15  59.7
+    .  6    6.  2.84  19.3
+    .  7    7.  2.69  40.2
+    .  8    8.  1.07  53.1
+    .  9    9.  2.75  38.0
+    . 10   10.  1.05  30.4
     . # ... with 90 more rows
 
 Maximum Likelihood Parameter Optimization
@@ -243,7 +237,7 @@ The data to be fit is an mrgsolve dataset. Required columns for fitting are:
 -   dv
 
 ``` r
-data <-  read.csv("inst/maintenance/data/optim-example.csv")
+data <- read.csv("inst/maintenance/data/optim-example.csv")
 
 head(data)
 ```
@@ -259,14 +253,14 @@ head(data)
 Plot the data to get an idea of the profiles to be fit. cmt 1 is plasma concentration data and cmt 2 is PD data
 
 ``` r
-ggplot(data,aes(x=time,y=dv,color=as.factor(ID)))+
-  geom_point()+
-  geom_line()+
-  facet_wrap("cmt")+
-  guides(color=F)
+ggplot(data, aes(x = time, y = dv, color = as.factor(ID))) +
+  geom_point() +
+  geom_line() +
+  facet_wrap("cmt") +
+  guides(color = FALSE)
 ```
 
-![](inst/maintenance/img/README-unnamed-chunk-16-1.png)
+![](inst/maintenance/img/README-unnamed-chunk-15-1.png)
 
 The following model will be fit to these data:
 
@@ -302,62 +296,76 @@ capture varPK = (PK*sigma1)*(PK*sigma1);
 
 
 capture PD = BL-(pow(PK,gamma)*Emax)/(pow(PK,gamma)+pow(EC50,gamma));
-capture varPD = (PD*sigma2)*(PD*sigma2);"
+capture varPD = (PD*sigma2)*(PD*sigma2);
 
-mod <- mcode("2cmtPK-Emax",code)
+capture ipred = NAN;
+capture var = NAN; 
+
+
+if(self.cmt == 1) {
+   ipred = PK;
+   var = varPK;
+}
+
+if(self.cmt == 2) {
+   ipred = PD;
+   var = varPD;
+}"
+
+mod <- mcode("2cmtPK-Emax", code)
 ```
 
-Here, the plasma concentrations, response, and variances were captured in the **PK**, **PD**, **varPK**, and **varPD** outputs, respectively.
+Here, the predicted plasma concentrations, response, and variances were captured in the **PK**, **PD**, **varPK**, and **varPD** outputs, respectively. Predictions and variances are consolidated to a single column each. If cmt == 1 the predicted output, `ipred`, will be PK and prediction variance, `var`, varPK. If cmt == 2 the predicted output will be PD and prediction variance varPD.
 
 Let's check how the initial parameter values fit the data.
 
 ``` r
-out <- mod%>%
-  data_set(data)%>%
-  obsonly()%>%
-  mrgsim()%>%
+out <- mod %>%
+  data_set(data) %>%
+  carry.out(cmt, dv) %>%
+  obsonly() %>%
+  mrgsim() %>%
   as.data.frame()
 
-ggplot(out,aes(x=time,y=PK,color=as.factor(ID)))+
-  geom_line()+
-  geom_point(data=filter(data,cmt==1),aes(y=dv))+
-  guides(color=F)
+ggplot(filter(out, cmt == 1), aes(x = time, y = ipred, color = as.factor(ID))) +
+  geom_line() +
+  geom_point(aes(y = dv)) +
+  guides(color = FALSE)
 ```
 
-![](inst/maintenance/img/README-unnamed-chunk-18-1.png)
+![](inst/maintenance/img/README-unnamed-chunk-17-1.png)
 
 ``` r
-ggplot(out,aes(x=time,y=PD,color=as.factor(ID)))+
-  geom_line()+
-  geom_point(data=filter(data,cmt==2),aes(y=dv))+
-  guides(color=F)
+ggplot(filter(out, cmt == 2), aes(x = time, y = ipred, color = as.factor(ID))) +
+  geom_line() +
+  geom_point(aes(y = dv)) +
+  guides(color = FALSE)
 ```
 
-![](inst/maintenance/img/README-unnamed-chunk-18-2.png)
+![](inst/maintenance/img/README-unnamed-chunk-17-2.png)
 
 Not terrible, should be good enough for initial estimates.
 
-Now let's use `mrgoptim` to optimize the parameters and return parameter values and precision. The `input`, `output`,and `var` arguments map the observed values to the output compartments and variances of the outputs. Since compartment `1` in the input dataset corresponds to plasma concentration data, which is the `PK` column in the output, they both need to be the first value in their respective vectors. Similarly, since `varPK` corresponds to the variance of the `PK` data, it is the first value in the `var` argument vector.
+Now let's use `mrgoptim` to optimize the parameters and return parameter values and precision. Use the `output`, and `var` arguments to specify which columns in the model code correspond to the predicted values and variances. Specify which system parameters to optimize with the `prms` argument and variance parameters with the `v_prms` arguments.
 
 ``` r
-fit<- mod%>%
-  data_set(data)%>%
-  mrgoptim(input=c(1,2),
-           output=c("PK","PD"),
-           var= c("varPK","varPD"),
-           prms=c("CL",
-             "VC",
-             "VP",
-             "Q",
-             "Emax",
-             "BL",
-             "EC50",
-             "gamma"),
-           v_prms=c("sigma1","sigma2"),
-           method="newuoa")
+fit <- mod %>%
+  data_set(data) %>%
+  mrgoptim(output = "ipred",
+           var = "var",
+           prms = c("CL",
+                    "VC",
+                    "VP",
+                    "Q",
+                    "Emax",
+                    "BL",
+                    "EC50",
+                    "gamma"),
+           v_prms = c("sigma1", "sigma2"),
+           method = "newuoa")
 ```
 
-The function returns a list with some information about the optimization, the final objective function value (-2LL), final parameter estimates, covariance and correlation matrices, CV percent, and output dataset.
+The function returns a list with some information about the optimization, the final objective function value (-LL), final parameter estimates, covariance and correlation matrices, CV percent, and output dataset.
 
 ``` r
 print(fit)
@@ -583,27 +591,28 @@ print(fit)
 Lets check how the optimized parameters fit the data.
 
 ``` r
-out_fit <- mod%>%
-  param(fit$par)%>%
-  data_set(data)%>%
-  obsonly()%>%
-  mrgsim()%>%
+out_fit <- mod %>%
+  param(fit$par) %>%
+  carry.out(cmt, dv) %>%
+  data_set(data) %>%
+  obsonly() %>%
+  mrgsim() %>%
   as.data.frame()
 
 
-ggplot(out_fit,aes(x=time,y=PK,color=as.factor(ID)))+
-  geom_line()+
-  geom_point(data=filter(data,cmt==1),aes(y=dv))+
-  guides(color=F)
+ggplot(filter(out_fit, cmt == 1), aes(x = time, y = ipred, color = as.factor(ID))) +
+  geom_line() +
+  geom_point(aes(y = dv)) +
+  guides(color = FALSE)
 ```
 
-![](inst/maintenance/img/README-unnamed-chunk-21-1.png)
+![](inst/maintenance/img/README-unnamed-chunk-20-1.png)
 
 ``` r
-ggplot(out_fit,aes(x=time,y=PD,color=as.factor(ID)))+
-  geom_line()+
-  geom_point(data=filter(data,cmt==2),aes(y=dv))+
-  guides(color=F)
+ggplot(filter(out_fit, cmt == 2), aes(x = time, y = ipred, color = as.factor(ID))) +
+  geom_line() +
+  geom_point(aes(y = dv)) +
+  guides(color = FALSE)
 ```
 
-![](inst/maintenance/img/README-unnamed-chunk-21-2.png)
+![](inst/maintenance/img/README-unnamed-chunk-20-2.png)

@@ -5,18 +5,16 @@
 \title{Fit a model to data using maximum likelihood objective function
 with newuoa or optim}
 \usage{
-mrgoptim(mod, input, output, var, prms, v_prms, cov = TRUE, restarts = 0,
-  method = c("newuoa", "Nelder-Mead", "BFGS", "CG", "L-BFGS-B", "SANN",
-  "Brent"), options = list(maxit = 10000))
+mrgoptim(mod, output = "ipred", var = "var", prms, v_prms, cov = TRUE,
+  restarts = 0, method = c("newuoa", "Nelder-Mead", "BFGS", "CG",
+  "L-BFGS-B", "SANN", "Brent"), options = list(maxit = 10000))
 }
 \arguments{
 \item{mod}{a model object}
 
-\item{input}{a numeric vector containing observation compartments in data_set to be fit}
+\item{output}{a character string containing name of prediction output column}
 
-\item{output}{a character vector containing names of pred output columns}
-
-\item{var}{a character vector containing names of variance output columns of preds}
+\item{var}{a character vector containing name of variance output column of preditcions}
 
 \item{prms}{a character vector of parameters to fit}
 

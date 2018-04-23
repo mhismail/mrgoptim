@@ -17,7 +17,7 @@ A toolkit to be used with `mrgsolve`
 # Installation
 ```{r, eval = FALSE}
 library(devtools)
-install_github("mrgsolve/mrgsolvetk")
+install_github("mrgsolve/mrgsolvetk", ref = "mrgoptim")
 ```
 
 
@@ -157,7 +157,7 @@ The data to be fit is an mrgsolve dataset. Required columns for fitting are:
 
 
 ```{r}
-data <-  read.csv("inst/maintenance/data/optim-example.csv")
+data <- read.csv("inst/maintenance/data/optim-example.csv")
 
 head(data)
 ```
@@ -166,17 +166,17 @@ Plot the data to get an idea of the profiles to be fit. cmt 1 is plasma concentr
 data and cmt 2 is PD data
 
 ```{r warning=FALSE}
-ggplot(data,aes(x=time,y=dv,color=as.factor(ID)))+
-  geom_point()+
-  geom_line()+
-  facet_wrap("cmt")+
-  guides(color=F)
+ggplot(data, aes(x = time, y = dv, color = as.factor(ID))) +
+  geom_point() +
+  geom_line() +
+  facet_wrap("cmt") +
+  guides(color = FALSE)
 ```
 
 The following model will be fit to these data:
 
 - PK: 2 compartment model
-- PD: Emax model with baseline
+- PD: Inhibitory Emax model with baseline
 - Proportional error models for both PK and PD
 
 ```{r}
@@ -207,56 +207,73 @@ capture varPK = (PK*sigma1)*(PK*sigma1);
 
 
 capture PD = BL-(pow(PK,gamma)*Emax)/(pow(PK,gamma)+pow(EC50,gamma));
-capture varPD = (PD*sigma2)*(PD*sigma2);"
+capture varPD = (PD*sigma2)*(PD*sigma2);
 
-mod <- mcode("2cmtPK-Emax",code)
+capture ipred = NAN;
+capture var = NAN; 
+
+
+if(self.cmt == 1) {
+   ipred = PK;
+   var = varPK;
+}
+
+if(self.cmt == 2) {
+   ipred = PD;
+   var = varPD;
+}"
+
+mod <- mcode("2cmtPK-Emax", code)
 ```
 
-Here, the plasma concentrations, response, and variances were captured in
-the **PK**, **PD**, **varPK**, and **varPD**  outputs, respectively.
+Here, the predicted plasma concentrations, response, and variances were captured in
+the **PK**, **PD**, **varPK**, and **varPD**  outputs, respectively. Predictions 
+and variances are consolidated to a single column each. If cmt == 1 the predicted 
+output, `ipred`, will be PK and prediction variance, `var`, varPK. If cmt == 2 the 
+predicted output will be PD and prediction variance varPD.
 
 Let's check how the initial parameter values fit the data. 
 
 ```{r warning=FALSE}
-out <- mod%>%
-  data_set(data)%>%
-  obsonly()%>%
-  mrgsim()%>%
+out <- mod %>%
+  data_set(data) %>%
+  carry.out(cmt, dv) %>%
+  obsonly() %>%
+  mrgsim() %>%
   as.data.frame()
 
-ggplot(out,aes(x=time,y=PK,color=as.factor(ID)))+
-  geom_line()+
-  geom_point(data=filter(data,cmt==1),aes(y=dv))+
-  guides(color=F)
+ggplot(filter(out, cmt == 1), aes(x = time, y = ipred, color = as.factor(ID))) +
+  geom_line() +
+  geom_point(aes(y = dv)) +
+  guides(color = FALSE)
 
-ggplot(out,aes(x=time,y=PD,color=as.factor(ID)))+
-  geom_line()+
-  geom_point(data=filter(data,cmt==2),aes(y=dv))+
-  guides(color=F)
+ggplot(filter(out, cmt == 2), aes(x = time, y = ipred, color = as.factor(ID))) +
+  geom_line() +
+  geom_point(aes(y = dv)) +
+  guides(color = FALSE)
 
 ```
 
 Not terrible, should be good enough for initial estimates.
 
 Now let's use `mrgoptim` to optimize the parameters and return parameter values and precision.
-The `input`, `output`,and `var` arguments map the observed values to the output compartments and variances of the outputs. Since compartment `1` in the input dataset corresponds to plasma concentration data, which is the `PK` column in the output, they both need to be the first value in their respective vectors. Similarly, since `varPK` corresponds to the variance of the `PK` data, it is the first value in the `var` argument vector.
+Use the `output`, and `var` arguments to specify which columns in the model code correspond to the predicted values and variances. Specify which system parameters to optimize with the `prms` argument and variance parameters with the `v_prms` arguments. 
 
 ```{r echo=T, results='hide'}
-fit<- mod%>%
-  data_set(data)%>%
-  mrgoptim(input=c(1,2),
-           output=c("PK","PD"),
-           var= c("varPK","varPD"),
-           prms=c("CL",
-             "VC",
-             "VP",
-             "Q",
-             "Emax",
-             "BL",
-             "EC50",
-             "gamma"),
-           v_prms=c("sigma1","sigma2"),
-           method="newuoa")
+fit <- mod %>%
+  data_set(data) %>%
+  mrgoptim(output = "ipred",
+           var = "var",
+           prms = c("CL",
+                    "VC",
+                    "VP",
+                    "Q",
+                    "Emax",
+                    "BL",
+                    "EC50",
+                    "gamma"),
+           v_prms = c("sigma1", "sigma2"),
+           method = "newuoa")
 
 ```
 The function returns a list with some information about the optimization, the final objective function value (-LL), final parameter estimates, covariance and correlation matrices, CV percent, and output dataset.
@@ -267,23 +284,24 @@ print(fit)
 ```
 Lets check how the optimized parameters fit the data. 
 ```{r warning=FALSE}
-out_fit <- mod%>%
-  param(fit$par)%>%
-  data_set(data)%>%
-  obsonly()%>%
-  mrgsim()%>%
+out_fit <- mod %>%
+  param(fit$par) %>%
+  carry.out(cmt, dv) %>%
+  data_set(data) %>%
+  obsonly() %>%
+  mrgsim() %>%
   as.data.frame()
 
 
-ggplot(out_fit,aes(x=time,y=PK,color=as.factor(ID)))+
-  geom_line()+
-  geom_point(data=filter(data,cmt==1),aes(y=dv))+
-  guides(color=F)
+ggplot(filter(out_fit, cmt == 1), aes(x = time, y = ipred, color = as.factor(ID))) +
+  geom_line() +
+  geom_point(aes(y = dv)) +
+  guides(color = FALSE)
 
-ggplot(out_fit,aes(x=time,y=PD,color=as.factor(ID)))+
-  geom_line()+
-  geom_point(data=filter(data,cmt==2),aes(y=dv))+
-  guides(color=F)
+ggplot(filter(out_fit, cmt == 2), aes(x = time, y = ipred, color = as.factor(ID))) +
+  geom_line() +
+  geom_point(aes(y = dv)) +
+  guides(color = FALSE)
 
 
 ```
