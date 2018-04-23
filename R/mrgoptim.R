@@ -38,7 +38,6 @@ h <- function (atol, rtol, param) {
     (rtol) ^ (1 / 3) * max(param, atol)
 }
 
-hj <- Vectorize(h, c("param"))
 
 get_matrices <- function(params, mod, input){
   mod_list <- as.list(mod)
@@ -49,7 +48,12 @@ get_matrices <- function(params, mod, input){
   dydtheta <- matrix(0, nrow = length(a), ncol = length(params))
   dgdtheta <- matrix(0, nrow = length(a), ncol = length(params))
 
-  hja <- hj(unname(mod_list$solver["atol"]), unname(mod_list$solver["rtol"]), params)
+  hja <- vapply(params, 
+                function(params) h(unname(mod_list$solver["atol"]), 
+                                   unname(mod_list$solver["rtol"]), 
+                                   params), 
+                numeric(1))
+
 
   for (i in seq_along(params)) {
     new_params1 <- params
@@ -238,10 +242,8 @@ mrgoptim <- function(mod,
     params <- 10 ^ fit[[1 + restarts]]$par
     
     
-    mats<- get_matrices(params, mod, input)
-    
-    M <- matrix (0, nrow = length(params), ncol = length(params))
-    
+    mats <- get_matrices(params, mod, input)
+
     # n x p matrix
     dydtheta.all <- mats[[1]]
     
@@ -255,9 +257,9 @@ mrgoptim <- function(mod,
     thetas <- which(names(params) %in% c(prms))
     
     # M is Fisher information matrix
-    M <- 1 / 2 * crossprod(dgdtheta.all/variances ^ 2, dgdtheta.all)
-    M[thetas, thetas] <- (M[thetas, thetas] + 
-                            crossprod(dydtheta.all[, thetas] / variances, dydtheta.all[, thetas])
+    M <- 1 / 2 * crossprod(dgdtheta.all / variances ^ 2, dgdtheta.all)
+    M[thetas, thetas] <- M[thetas, thetas] + 
+                         crossprod(dydtheta.all[, thetas] / variances, dydtheta.all[, thetas])
     
     
     cov <- tryCatch(solve(M), error = function(err) return(err))
