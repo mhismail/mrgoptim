@@ -15,12 +15,14 @@ install_github("mrgsolve/mrgsolvetk", ref = "mrgoptim")
 Examples
 ========
 
+-   [Sensitivity Analyses](#sensitivity-analyses)
+-   [Parameter Optimization](#maximum-likelihood-parameter-optimization)
+
 ``` r
 library(ggplot2)
 library(dplyr)
 library(mrgsolve)
 library(mrgsolvetk)
-source("R/mrgoptim.R")
 
 theme_set(theme_bw())
 
@@ -58,16 +60,16 @@ out
     . # A tibble: 1,930 x 8
     .       ID  time    CP    CL    VC   KA1 name         value
     .    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <chr>        <dbl>
-    .  1    1. 0.     0.    1.02  13.1  1.07 multivariate    1.
-    .  2    1. 0.250  1.77  1.02  13.1  1.07 multivariate    1.
-    .  3    1. 0.500  3.09  1.02  13.1  1.07 multivariate    1.
-    .  4    1. 0.750  4.07  1.02  13.1  1.07 multivariate    1.
-    .  5    1. 1.00   4.78  1.02  13.1  1.07 multivariate    1.
-    .  6    1. 1.25   5.30  1.02  13.1  1.07 multivariate    1.
-    .  7    1. 1.50   5.66  1.02  13.1  1.07 multivariate    1.
-    .  8    1. 1.75   5.91  1.02  13.1  1.07 multivariate    1.
-    .  9    1. 2.00   6.07  1.02  13.1  1.07 multivariate    1.
-    . 10    1. 2.25   6.16  1.02  13.1  1.07 multivariate    1.
+    .  1    1. 0.     0.    2.51  27.3  2.75 multivariate    1.
+    .  2    1. 0.250  1.80  2.51  27.3  2.75 multivariate    1.
+    .  3    1. 0.500  2.66  2.51  27.3  2.75 multivariate    1.
+    .  4    1. 0.750  3.05  2.51  27.3  2.75 multivariate    1.
+    .  5    1. 1.00   3.21  2.51  27.3  2.75 multivariate    1.
+    .  6    1. 1.25   3.25  2.51  27.3  2.75 multivariate    1.
+    .  7    1. 1.50   3.24  2.51  27.3  2.75 multivariate    1.
+    .  8    1. 1.75   3.19  2.51  27.3  2.75 multivariate    1.
+    .  9    1. 2.00   3.13  2.51  27.3  2.75 multivariate    1.
+    . 10    1. 2.25   3.07  2.51  27.3  2.75 multivariate    1.
     . # ... with 1,920 more rows
 
 ``` r
@@ -187,16 +189,16 @@ out
     . # A tibble: 19,300 x 7
     .       ID  time    CP    CL    VC name         value
     .    <dbl> <dbl> <dbl> <dbl> <dbl> <chr>        <dbl>
-    .  1    1. 0.    0.     1.39  71.1 multivariate    1.
-    .  2    1. 0.250 0.310  1.39  71.1 multivariate    1.
-    .  3    1. 0.500 0.550  1.39  71.1 multivariate    1.
-    .  4    1. 0.750 0.736  1.39  71.1 multivariate    1.
-    .  5    1. 1.00  0.878  1.39  71.1 multivariate    1.
-    .  6    1. 1.25  0.988  1.39  71.1 multivariate    1.
-    .  7    1. 1.50  1.07   1.39  71.1 multivariate    1.
-    .  8    1. 1.75  1.14   1.39  71.1 multivariate    1.
-    .  9    1. 2.00  1.18   1.39  71.1 multivariate    1.
-    . 10    1. 2.25  1.22   1.39  71.1 multivariate    1.
+    .  1    1. 0.    0.     2.19  86.3 multivariate    1.
+    .  2    1. 0.250 0.255  2.19  86.3 multivariate    1.
+    .  3    1. 0.500 0.453  2.19  86.3 multivariate    1.
+    .  4    1. 0.750 0.605  2.19  86.3 multivariate    1.
+    .  5    1. 1.00  0.722  2.19  86.3 multivariate    1.
+    .  6    1. 1.25  0.811  2.19  86.3 multivariate    1.
+    .  7    1. 1.50  0.879  2.19  86.3 multivariate    1.
+    .  8    1. 1.75  0.931  2.19  86.3 multivariate    1.
+    .  9    1. 2.00  0.969  2.19  86.3 multivariate    1.
+    . 10    1. 2.25  0.998  2.19  86.3 multivariate    1.
     . # ... with 19,290 more rows
 
 ``` r
@@ -206,16 +208,16 @@ distinct(out,ID,CL,VC)
     . # A tibble: 100 x 3
     .       ID    CL    VC
     .    <dbl> <dbl> <dbl>
-    .  1    1.  1.39  71.1
-    .  2    2.  2.12  72.6
-    .  3    3.  1.19  63.8
-    .  4    4.  1.66  36.2
-    .  5    5.  3.15  59.7
-    .  6    6.  2.84  19.3
-    .  7    7.  2.69  40.2
-    .  8    8.  1.07  53.1
-    .  9    9.  2.75  38.0
-    . 10   10.  1.05  30.4
+    .  1    1.  2.19  86.3
+    .  2    2.  2.37  60.0
+    .  3    3.  1.88  48.3
+    .  4    4.  3.23  61.0
+    .  5    5.  2.80  75.1
+    .  6    6.  3.26  55.0
+    .  7    7.  2.69  26.1
+    .  8    8.  1.54  87.6
+    .  9    9.  2.51  39.9
+    . 10   10.  2.77  47.8
     . # ... with 90 more rows
 
 Maximum Likelihood Parameter Optimization
@@ -265,7 +267,7 @@ ggplot(data, aes(x = time, y = dv, color = as.factor(ID))) +
 The following model will be fit to these data:
 
 -   PK: 2 compartment model
--   PD: Emax model with baseline
+-   PD: Inhibitory Emax model with baseline
 -   Proportional error models for both PK and PD
 
 ``` r

@@ -22,6 +22,9 @@ install_github("mrgsolve/mrgsolvetk", ref = "mrgoptim")
 
 
 # Examples
+
+- [Sensitivity Analyses](#sensitivity-analyses)
+- [Parameter Optimization](#maximum-likelihood-parameter-optimization)
 ```{r warning=FALSE}
 library(ggplot2)
 library(dplyr)
