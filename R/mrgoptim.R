@@ -8,7 +8,6 @@ ML_obj_fun <- function(raw,pred,var) {
 get_preds <- function (mod, params) {
   out <- mod %>%
     param(params) %>%
-    obsonly() %>%
     mrgsim(end = -1) %>%
     as.data.frame()
 
@@ -79,7 +78,7 @@ get_matrices <- function(params, mod){
 ##' 
 ##' @param mod a model object
 ##' @param output a character string containing name of prediction output column
-##' @param var a character vector containing name of variance output column of preditcions
+##' @param var a character string containing name of variance output column of predictions
 ##' @param prms a character vector of parameters to fit
 ##' @param v_prms a character vector of variance parameters to fit
 ##' @param cov logical, perform covariance step
@@ -141,6 +140,7 @@ mrgoptim <- function(mod,
   # Make sure random effects disabled
   mod <- zero.re(mod)
   mod <- carry.out(mod, dv, cmt)
+  mod <- obsonly(mod)
   
   #Get all parameters in mod object
   params <- mod_list$param
