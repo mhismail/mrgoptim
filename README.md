@@ -9,7 +9,7 @@ Installation
 
 ``` r
 library(devtools)
-install_github("mrgsolve/mrgsolvetk", ref = "mrgoptim")
+install_github("mhismail/mrgsolvetk", ref = "mrgoptim")
 ```
 
 Examples
