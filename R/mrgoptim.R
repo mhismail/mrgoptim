@@ -45,8 +45,8 @@ get_matrices <- function(params, mod){
   dgdtheta <- matrix(0, nrow = length(a), ncol = length(params))
 
   hja <- vapply(params, 
-                function(params) h(mod_list$solver["atol"], 
-                                   mod_list$solver["rtol"], 
+                function(params) h(mod_list$atol, 
+                                   mod_list$rtol, 
                                    params), 
                 numeric(1))
 
