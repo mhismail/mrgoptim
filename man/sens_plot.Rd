@@ -4,8 +4,15 @@
 \alias{sens_plot}
 \title{Plot sensitivity analysis results}
 \usage{
-sens_plot(data, y, x = "time", col = split, log = FALSE, split = FALSE,
-  lwd = 0.75)
+sens_plot(
+  data,
+  y,
+  x = "time",
+  col = split,
+  log = FALSE,
+  split = FALSE,
+  lwd = 0.75
+)
 }
 \arguments{
 \item{data}{data frame of sensitivity analysis results}

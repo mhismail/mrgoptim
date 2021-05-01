@@ -5,8 +5,7 @@
 \alias{sens_unif_}
 \title{Sensitivity analysis with uniform distribtion}
 \usage{
-sens_unif(mod, pars = names(param(mod)), .n = 100, univariate = FALSE,
-  ...)
+sens_unif(mod, pars = names(param(mod)), .n = 100, univariate = FALSE, ...)
 
 sens_unif_(mod, .dots)
 }
