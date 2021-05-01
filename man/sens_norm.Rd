@@ -5,8 +5,7 @@
 \alias{sens_norm_}
 \title{Sensitivity analysis with log-normal distributions}
 \usage{
-sens_norm(mod, pars = names(param(mod)), .n = 100, univariate = FALSE,
-  ...)
+sens_norm(mod, pars = names(param(mod)), .n = 100, univariate = FALSE, ...)
 
 sens_norm_(mod, .dots)
 }
