@@ -145,8 +145,8 @@ mrgoptim <- function(mod,
   mod@args$Request <- c(output, var)
   
   # Make sure random effects disabled
-  mod <- zero.re(mod)
-  mod <- carry.out(mod, dv, cmt)
+  mod <- zero_re(mod)
+  mod <- carry_out(mod, dv, cmt)
   mod <- obsonly(mod)
   
   #Get all parameters in mod object
