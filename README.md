@@ -1,5 +1,5 @@
 
-mrgsolvetk
+mrgoptim
 ==========
 
 A toolkit to be used with `mrgsolve` for optimization of model parameters.
@@ -9,7 +9,7 @@ Installation
 
 ``` r
 library(devtools)
-install_github("mhismail/mrgsolvetk", ref = "mrgoptim")
+install_github("mhismail/mrgoptim")
 ```
 
 Examples
