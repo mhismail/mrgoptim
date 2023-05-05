@@ -1,4 +1,4 @@
-Package: mrgsolvetk
+Package: mrgoptim
 Type: Package
 Title: Simulation Tool Kit for mrgsolve
 Version: 0.0.2
